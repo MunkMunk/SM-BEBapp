@@ -1,6 +1,6 @@
 package com.example.sm_bebapp;
 
-
+/*
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -38,4 +38,4 @@ public class SmsReceiver extends BroadcastReceiver
     }
      
     
-}/**/
+}*/
