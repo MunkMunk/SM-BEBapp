@@ -1,6 +1,7 @@
 package com.example.sm_bebapp;
 
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,11 +12,13 @@ import android.widget.Toast;
 public class SmsReceiver extends BroadcastReceiver
 {
 	
-	
+	Activity mainAct = new MainActivity();
 	
     @Override
     public void onReceive(Context context, Intent intent) 
     {
+    	
+    	String sender;
         //---get the SMS message passed in---
         Bundle bundle = intent.getExtras();        
         SmsMessage[] msgs = null;
@@ -27,21 +30,12 @@ public class SmsReceiver extends BroadcastReceiver
             msgs = new SmsMessage[pdus.length];            
             for (int i=0; i<msgs.length; i++){
                 msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
+                sender = msgs[i].getOriginatingAddress();
                 str += "SMS from " + msgs[i].getOriginatingAddress();
                 str += " :";
                 str += msgs[i].getMessageBody().toString();
                 str += "\n";
-                
-                
-                Intent sendIntent = new Intent();
-            	sendIntent.putExtra("phoneNumber", msgs[i].getOriginatingAddress());
-            	sendIntent.putExtra("message", msgs[i].getMessageBody().toString());
-            	//sendIntent.setClass(context, sendSMSActivity.class);
-            	sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.sendSMSActivity");
-            	sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            	context.startActivity(sendIntent);
-                
-                
+                ((MainActivity) mainAct).callSendSMS(sender, str);
             }
             
             

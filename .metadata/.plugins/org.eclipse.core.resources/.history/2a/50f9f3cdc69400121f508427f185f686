@@ -11,11 +11,12 @@ import android.widget.Toast;
 public class SmsReceiver extends BroadcastReceiver
 {
 	
-	
+	MainActivity mainAct = new MainActivity();
 	
     @Override
     public void onReceive(Context context, Intent intent) 
     {
+    	
         //---get the SMS message passed in---
         Bundle bundle = intent.getExtras();        
         SmsMessage[] msgs = null;
@@ -31,17 +32,7 @@ public class SmsReceiver extends BroadcastReceiver
                 str += " :";
                 str += msgs[i].getMessageBody().toString();
                 str += "\n";
-                
-                
-                Intent sendIntent = new Intent();
-            	sendIntent.putExtra("phoneNumber", msgs[i].getOriginatingAddress());
-            	sendIntent.putExtra("message", msgs[i].getMessageBody().toString());
-            	//sendIntent.setClass(context, sendSMSActivity.class);
-            	sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.sendSMSActivity");
-            	sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            	context.startActivity(sendIntent);
-                
-                
+                mainAct.callSendSMS(msgs[i].getOriginatingAddress(), "Beb : "+msgs[i].getMessageBody().toString());
             }
             
             

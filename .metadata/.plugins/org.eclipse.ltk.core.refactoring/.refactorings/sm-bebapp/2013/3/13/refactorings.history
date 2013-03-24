@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;com.example.sm_bebapp.returnSMS&apos; to &apos;sendSMSActivity&apos;&#x0D;&#x0A;- Original project: &apos;sm-bebapp&apos;&#x0D;&#x0A;- Original element: &apos;com.example.sm_bebapp.returnSMS&apos;&#x0D;&#x0A;- Renamed element: &apos;com.example.sm_bebapp.sendSMSActivity&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;returnSMS&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;com.example.sm_bebapp{returnSMS.java[returnSMS" matchStrategy="1" name="sendSMSActivity" qualified="false" references="true" similarDeclarations="false" stamp="1364161278358" textual="false" version="1.0"/>
+</session>
