@@ -37,7 +37,10 @@ public class SmsReceiver extends BroadcastReceiver
             	sendIntent.putExtra("phoneNumber", msgs[i].getOriginatingAddress());
             	sendIntent.putExtra("message", msgs[i].getMessageBody().toString());
             	//sendIntent.setClass(context, sendSMSActivity.class);
-            	sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.sendSMSActivity");
+            	
+            	sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.ActivitySQL");
+            	
+            	//sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.sendSMSActivity");
             	sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             	context.startActivity(sendIntent);
                 
