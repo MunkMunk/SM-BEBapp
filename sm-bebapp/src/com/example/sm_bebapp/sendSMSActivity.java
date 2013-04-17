@@ -24,6 +24,10 @@ public class sendSMSActivity extends Activity {
         
         sendSMS(phoneNumber,message);
         
+        finish();
+        
+        
+        
         
     }
     

@@ -48,6 +48,8 @@ public class MainActivity extends Activity
         txtPhoneNo = (EditText) findViewById(R.id.txtPhoneNo);
         txtMessage = (EditText) findViewById(R.id.txtMessage);
  
+        
+        
         btnSendSMS.setOnClickListener(new View.OnClickListener() 
         {
             public void onClick(View v) 
@@ -68,8 +70,11 @@ public class MainActivity extends Activity
                     Toast.makeText(getBaseContext(), 
                         "Please enter both phone number and message.", 
                         Toast.LENGTH_SHORT).show();
-            }
-        });        
+            	}
+        	}); 
+       
+        
+        	
     }
     
     
