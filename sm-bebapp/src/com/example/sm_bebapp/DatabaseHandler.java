@@ -156,15 +156,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        
     }
  
-    // Deleting single contact
-    public void deleteContact(Player player) {
+    // Deleting single player
+    public void deletePlayer(Player player) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_CONTACTS, KEY_PH_NO + " = ?",
                 new String[] { player.getPhoneNumber() });
         db.close();
     }
  
-    // Getting contacts Count
+    // Getting contacts player
     public int getContactsCount() {
         String countQuery = "SELECT  * FROM " + TABLE_CONTACTS;
         SQLiteDatabase db = this.getReadableDatabase();

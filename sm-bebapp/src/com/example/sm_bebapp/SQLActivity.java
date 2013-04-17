@@ -12,12 +12,14 @@ public class SQLActivity extends Activity {
 	
 	String phoneNumber, message;
 	DatabaseHandler db; 
+	TextParser textParser; 
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
  
         db = new DatabaseHandler(this);
+        textParser = new TextParser();
         
         phoneNumber = getIntent().getExtras().getString("phoneNumber");
         message = getIntent().getExtras().getString("message");
@@ -95,10 +97,26 @@ public class SQLActivity extends Activity {
     
     public boolean CheckDBCommands(String _phoneNumber, String _message) 
     {
-    	 if(_message.equals("delete"))
+    	 if(_message.equals("BEB Clear players"))
          {
          	db.ClearTable(); 	
-         	SendOutSMS(_phoneNumber, "Table Cleared"); 
+         	SendOutSMS(_phoneNumber, "BEB: Table Cleared"); 
+         	return false;
+         }
+    	 else if(_message.equals("BEB Delete me"))
+         {
+    		Player player = null;
+    	    player = db.getPlayer(_phoneNumber); //find the player
+    	    if(player == null) //If the player does not exist, just send confermation
+    	    {
+    	    	SendOutSMS(phoneNumber, "BEB: You were already not in the player list");
+    	    }
+    	    else  // otherwise remove the player. 
+    	    {
+    	        db.deletePlayer(player);
+    	        SendOutSMS(phoneNumber, "BEB: You have been removed from the player list.");
+    	    }
+    	    	
          	return false;
          }
     	 else 
@@ -123,18 +141,17 @@ public class SQLActivity extends Activity {
     	}
     	else  // otherwise update last message and story
     	{
-            player.setLastAnswer(		message);
+    		//Story parsing here
+    		player.setLastAnswer(		message);
             player.setStoryLocation(		"0");
             db.updatePlayer(player);
-            SendOutSMS(phoneNumber, "Hi you said: \"" + message + "\"");
+            String outMessage = textParser.ParseMesssage(player, _message);
+            SendOutSMS(phoneNumber, outMessage);
     	}
     	
     	
-    	//Story parsing here
-    	
-    	
-    	 // DB calls here!!
-        
+
     }
+    
    
 }
