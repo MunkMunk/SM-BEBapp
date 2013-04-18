@@ -53,4 +53,11 @@ public class Player {
     public void setStoryLocation(String _story_location){
         this.story_location = _story_location;
     }
+    
+    public String toShortString()
+    {
+    	return getName() + " " + getPhoneNumber() + " [" + getStoryLocation() +"]\r\n\"" + getLastAnswer() + "\"";
+    	
+    }
+    
 }

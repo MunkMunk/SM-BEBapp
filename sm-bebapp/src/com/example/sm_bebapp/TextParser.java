@@ -1,5 +1,7 @@
 package com.example.sm_bebapp;
 
+import android.util.Log;
+
 
 //This Class provides fucntions to parse Text 
 public class TextParser {
@@ -9,31 +11,46 @@ public class TextParser {
 	String noList 		= "(no|nope|n|nah|noo|negative)"; 
 	String maybeList 	= "(maybe|sometimes|not sure|can't tell|possibly)"; 
 	
+	DatabaseHandler db; 
 	
-	
-	public void TextParser()
+	public TextParser(DatabaseHandler _db)
 	{
-		
+		db = _db; 
 		
 	}
 	
 	public String ParseMesssage(Player _player, String _message)
 	{
-		switch (ParseYesNo( _message)) 
+		String storyId = _player.getStoryLocation();
+		Response currentResponse = db.getResponse(storyId);
+		
+		if(currentResponse != null)
 		{
-			case 0:  
-			return "You Didn't say anything"; 
-			case 1:  
-			return "You said yes"; 
-			case 2:  
-			return "You said no"; 
-			case 3:  
-			return "You said maybe"; 
-			case 4:  
-			return "You said something"; 
-			default: 
-			return "You said something"; 
+			switch (ParseYesNo( _message)) 
+			{				
+				case 0:  
+					return updateAnswer( _player, _message, currentResponse, currentResponse.getNoResponseLink() , "No Response");
+				case 1:  
+					return updateAnswer( _player, _message, currentResponse, currentResponse.getYesLink() , "Yes");
+				case 2:  
+					return updateAnswer( _player, _message, currentResponse, currentResponse.getNoLink() , "No");
+				case 3:  
+					return updateAnswer( _player, _message, currentResponse, currentResponse.getMaybeLink() , "Maybe");
+				case 4:  
+					return updateAnswer( _player, _message, currentResponse, currentResponse.getAnyLink() , "Any");
+				default: 
+					 Log.d(">> ERROR!"  , " Could not parse Yes/No on message. Dump> Message: " + _message + " Player " + _player.toShortString());
+					return "BEB> Error! could not parse Yes No. If you are seing this error something really bad happened I don't know what."; 
+			}
 		}
+		else
+		{
+			_player.setStoryLocation("0");
+			db.updatePlayer(_player);
+			Log.d(">> ERROR!"  , " Player does not have a response Id. Dump> Message: " + _message + " Player " + _player.toShortString());
+			return "BEB> Error! You are no longer on the dialog tree. Resetting location to the start";
+		}
+		
 		
 	}
 	
@@ -71,9 +88,29 @@ public class TextParser {
 			return true;
 		}
 		return false; 
-		
 	}
 	
-	
+	public String updateAnswer(Player _player, String _message, Response _currentResponse,  String _responseLink, String _responseType)
+	{
+	    if(_responseLink.equals("none"))
+	    {
+	    	_responseLink =  _currentResponse.getAnyLink();
+	    }
+		
+		Response outResponse = db.getResponse(_responseLink);
+		if(outResponse != null)
+		{
+			_player.setStoryLocation(outResponse.getId());
+    		_player.setLastAnswer( _message);
+			db.updatePlayer(_player);
+			return outResponse.getText(); //parse text here
+		}
+		else 
+		{
+			Log.d(">> ERROR!"  , " Response " +_currentResponse.getId()+" has no out link for " + _responseType + ". Dump> " + _currentResponse.toShortString());
+			return "BEB> ERROR! Response " +_currentResponse.getId()+" has no out link for " + _responseType + ".";
+		}
+		
+	}
 
 }

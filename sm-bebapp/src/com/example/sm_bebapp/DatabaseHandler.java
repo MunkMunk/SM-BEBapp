@@ -21,14 +21,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
  
     // Contacts table name
     private static final String TABLE_CONTACTS = "contacts";
- 
     // Contacts Table Columns names
-
     private static final String KEY_NAME = "name";
     private static final String KEY_PH_NO = "phone_number";
     private static final String KEY_LASTANSWER = "last_answer";
     private static final String KEY_STORYLOCATION = "story_location";
- 
+    
+    //Response table name
+    private static final String TABLE_RESPONSES = "responses";
+    //Response table columns names
+    private static final String KEY_ID = "id";
+    private static final String KEY_TEXT = "text"; 
+    private static final String KEY_YES_LINK = "yeslink";
+    private static final String KEY_NO_LINK = "nolink";
+    private static final String KEY_MAYBE_LINK = "maybelink";
+    private static final String KEY_ANY_LINK = "anylink";
+    private static final String KEY_NORESP_LINK = "noresplink";
+    
+    
+    
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -43,6 +54,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     			+ KEY_STORYLOCATION + 	" TEXT"
     			+ ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
+        
+        String CREATE_RESPONSE_TABLE = "CREATE TABLE " + TABLE_RESPONSES + "("
+    			+ KEY_ID + 				" TEXT,"
+    			+ KEY_TEXT  +			" TEXT,"
+                + KEY_YES_LINK + 		" TEXT,"
+    			+ KEY_NO_LINK + 		" TEXT,"
+    			+ KEY_MAYBE_LINK + 		" TEXT,"
+    			+ KEY_ANY_LINK + 		" TEXT,"
+    			+ KEY_NORESP_LINK + 	" TEXT"
+    			+ ")";
+        db.execSQL(CREATE_RESPONSE_TABLE);
     }
  
     // Upgrading database
@@ -50,7 +72,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS);
- 
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESPONSES);
         // Create tables again
         onCreate(db);
     }
@@ -59,7 +81,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * All CRUD(Create, Read, Update, Delete) Operations
      */
  
-    // Adding new contact
+    // Adding new Player
     void addPlayer(Player player) {
         SQLiteDatabase db = this.getWritableDatabase();
  
@@ -72,16 +94,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(TABLE_CONTACTS, null, values);
         db.close(); // Closing database connection
     }
+    
+ // Adding new RESPONSE
+    void addResponse(Response response) {
+        SQLiteDatabase db = this.getWritableDatabase();
  
-    // Getting single contact
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID, response.getId()); // Player Phone
+        values.put(KEY_TEXT, response.getText()); // Player Name
+        values.put(KEY_YES_LINK, response.getYesLink());
+        values.put(KEY_NO_LINK, response.getNoLink());
+        values.put(KEY_MAYBE_LINK, response.getMaybeLink());
+        values.put(KEY_ANY_LINK, response.getAnyLink());
+        values.put(KEY_NORESP_LINK, response.getNoResponseLink());
+        // Inserting Row
+        db.insert(TABLE_RESPONSES, null, values);
+        db.close(); // Closing database connection
+    }
+    
+    // Getting single Player
     Player getPlayer(String _phoneNumber) {
         SQLiteDatabase db = this.getReadableDatabase();
  
         Cursor cursor = db.query(TABLE_CONTACTS, new String[] {
         		KEY_PH_NO, KEY_NAME,  KEY_LASTANSWER, KEY_STORYLOCATION}, KEY_PH_NO + "=?",
                 new String[] { _phoneNumber }, null, null, null, null);
-        
-       
+
         if (cursor.moveToFirst())
         {
         	Log.d(">> Data Handler"  , "Found Player #" + _phoneNumber);
@@ -94,19 +132,47 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             cursor.close();
             db.close();
             return player;
-        	
-            
         } 
         else
         {
         	Log.d(">> Data Handler"  , "No Player with #" + _phoneNumber);
         	return null; 
-        	
         }
-        
     }
+    
+    // Getting single Response
+    Response getResponse(String _id) {
+        SQLiteDatabase db = this.getReadableDatabase();
  
-    // Getting All Contacts
+        Cursor cursor = db.query(TABLE_RESPONSES, new String[] {
+        		KEY_ID, KEY_TEXT,  KEY_YES_LINK, KEY_NO_LINK, KEY_MAYBE_LINK, KEY_ANY_LINK, KEY_NORESP_LINK}, KEY_ID + "=?",
+                new String[] { _id }, null, null, null, null);
+
+        if (cursor.moveToFirst())
+        {
+        	Log.d(">> Data Handler"  , "Found Response id " + _id);
+        	Response response = new Response();
+            response.setId(				cursor.getString(0));
+            response.setText(			cursor.getString(1));
+            response.setYesLink(		cursor.getString(2));
+            response.setNoLink(			cursor.getString(3));
+            response.setMaybeLink(		cursor.getString(4));
+            response.setAnyLink(		cursor.getString(5));
+            response.setNoResponseLink(	cursor.getString(6));
+            // return contact
+            cursor.close();
+            db.close();
+            return response;
+        } 
+        else
+        {
+        	Log.d(">> Data Handler"  , "No Response with id " + _id);
+        	return null; 
+        }
+    }
+    
+    
+    // Getting All Players
     public List<Player> getAllContacts() {
         List<Player> playerList = new ArrayList<Player>();
         // Select All Query
@@ -136,6 +202,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return playerList;
     }
  
+    
+    // Getting All Responses
+    public List<Response> getAllResponses() {
+        List<Response> responseList = new ArrayList<Response>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_RESPONSES;
+ 
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+ 
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+            	Response response = new Response();
+                response.setId(				cursor.getString(0));
+                response.setText(			cursor.getString(1));
+                response.setYesLink(		cursor.getString(2));
+                response.setNoLink(			cursor.getString(3));
+                response.setMaybeLink(		cursor.getString(4));
+                response.setAnyLink(		cursor.getString(5));
+                response.setNoResponseLink(	cursor.getString(6));
+                
+                // Adding contact to list
+                responseList.add(response);
+            } while (cursor.moveToNext());
+        }
+ 
+        db.close();
+        
+        // return contact list
+        return responseList;
+    }
     // Updating single contact
     public int updatePlayer(Player player) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -175,10 +273,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
     
-    public void ClearTable()
+    public void ClearPlayerTable()
     {
     	SQLiteDatabase db = this.getWritableDatabase();
-    	Log.d(">> Data Handler"  , "Clearing Table");
+    	Log.d(">> Data Handler"  , "Clearing Player Table");
     	db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS);
     	
     	String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
@@ -188,6 +286,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     			+ KEY_STORYLOCATION + 	" TEXT"
     			+ ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
+        db.close();
+    }
+    
+    public void ClearResponseTable()
+    {
+    	SQLiteDatabase db = this.getWritableDatabase();
+    	Log.d(">> Data Handler"  , "Clearing Response Table");
+    	db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESPONSES);
+    	
+    	String CREATE_RESPONSE_TABLE = "CREATE TABLE " + TABLE_RESPONSES + "("
+    			+ KEY_ID + 				" TEXT,"
+    			+ KEY_TEXT  +			" TEXT,"
+                + KEY_YES_LINK + 		" TEXT,"
+    			+ KEY_NO_LINK + 		" TEXT,"
+    			+ KEY_MAYBE_LINK + 		" TEXT,"
+    			+ KEY_ANY_LINK + 		" TEXT,"
+    			+ KEY_NORESP_LINK + 	" TEXT"
+    			+ ")";
+        db.execSQL(CREATE_RESPONSE_TABLE);
         db.close();
     }
     

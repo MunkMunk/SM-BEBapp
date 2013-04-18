@@ -13,48 +13,37 @@ public class SQLActivity extends Activity {
 	String phoneNumber, message;
 	DatabaseHandler db; 
 	TextParser textParser; 
+	 private static final String COMMAND_PREFIX = "CMD"+" ";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
  
         db = new DatabaseHandler(this);
-        textParser = new TextParser();
+        textParser = new TextParser(db);
         
         phoneNumber = getIntent().getExtras().getString("phoneNumber");
         message = getIntent().getExtras().getString("message");
         
         Log.d(">> NEW MESSAGE"  , "From " + phoneNumber + " : \"" + message +"\"");
 
-        if(CheckDBCommands(phoneNumber, message)) //Check Admin Commands first. If message is a command, skip story update. 
-        {
-        	ParseMessage(phoneNumber,  message); //then parse story 
-        }
-        
-       
-       
-        
-      
-        
-       
+    	if(CheckCommand("", message))//Check Admin Commands first. If message is a command, skip story update. 
+    	{
+    		ParseCommands(phoneNumber, message);
+    	}
+    	else 
+    	{
+    		ParseMessage(phoneNumber,  message); //then parse story 
+    	}
         
         
-       
+    
         
     	// Reading all contacts
-        Log.d("Reading: ", "Reading all contacts..");
-        List<Player> players = db.getAllContacts();       
- 
-        for (Player cn : players) {
-            String log = "player n:" + cn.getName() + " #: " + cn.getPhoneNumber() + " la: \"" + cn.getLastAnswer() + "\" sl: " + cn.getStoryLocation();
-                // Writing Contacts to log
-        Log.d("Name: ", log);
         
+        printAllPlayers();
+        //printAllResponses(); 
         finish();
-        
-        
-    	}
- 
         
        
         
@@ -92,38 +81,157 @@ public class SQLActivity extends Activity {
         sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.sendSMSActivity");
     	sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	startActivity(sendIntent);
+    	Log.d(">> MESSAGE OU"  , "To " + phoneNumber + " : \"" +_outMessage +"\"");
     }
     
     
-    public boolean CheckDBCommands(String _phoneNumber, String _message) 
+    public void ParseCommands(String _phoneNumber, String _message) 
     {
-    	 if(_message.equals("BEB Clear players"))
-         {
-         	db.ClearTable(); 	
-         	SendOutSMS(_phoneNumber, "BEB: Table Cleared"); 
-         	return false;
-         }
-    	 else if(_message.equals("BEB Delete me"))
-         {
-    		Player player = null;
-    	    player = db.getPlayer(_phoneNumber); //find the player
-    	    if(player == null) //If the player does not exist, just send confermation
-    	    {
-    	    	SendOutSMS(phoneNumber, "BEB: You were already not in the player list");
-    	    }
-    	    else  // otherwise remove the player. 
-    	    {
-    	        db.deletePlayer(player);
-    	        SendOutSMS(phoneNumber, "BEB: You have been removed from the player list.");
-    	    }
-    	    	
-         	return false;
-         }
-    	 else 
-    	 {
-    		 return true;
-    	 }
+    	
+    	String[] args = ParseCommand(_message);
+    	
+    	//-------Clear All Players from the Player table
+    	if(CheckCommand("clear all players", args[0]))
+        {
+    		db.ClearPlayerTable(); 	
+         	SendOutSMS(_phoneNumber, "BEB> Table Cleared"); 
+         	
+        }
+    	//-------Delete a player 
+    	else if(CheckCommand("delete", args[0]))
+        {
+    
+    		String phoneNumber =""; 
+    		Boolean DeletePlayer = false; 
+    		
+    		if(args.length >= 2)
+    		{
+    			if(textParser.ParseWord("me", args[1]))
+    			{
+    				phoneNumber = _phoneNumber; 
+    				DeletePlayer = true; 
+    			}
+    			else 
+    			{
+    				phoneNumber = args[1];
+    				DeletePlayer = true; 
+    			}
+    		}
+    		else 
+    		{
+    			SendOutSMS(_phoneNumber, "BEB> ERROR \r\n You must specify a phone number for player.");
+    			DeletePlayer = false; 
+    		}
+    		
+    		if(DeletePlayer)
+    		{
+	    		Player player = null;
+	    	    player = db.getPlayer(phoneNumber); //find the player
+	    	    if(player == null) //If the player does not exist
+	    	    {
+	    	    	SendOutSMS(_phoneNumber, "BEB> Player ["+phoneNumber+"] not in the player list");
+	    	    }
+	    	    else  // otherwise remove the player. 
+	    	    {
+	    	        db.deletePlayer(player);
+	    	        SendOutSMS(_phoneNumber, "BEB> Player ["+phoneNumber+"] removed from the player list.");
+	    	    }
+    		}
+        }
+    	//-------Show All PLayers 
+    	else if(CheckCommand("show player table", args[0]))
+        {
+    		 SendOutSMS(phoneNumber, "BEB> PLAYER TABLE \r\n" + getAllPlayers());
+    		 
+        }
+    	//-------Show a PLayer 
+    	else if(CheckCommand("show player", args[0]))
+        {
+    		String phoneNumber =""; 
+    		Boolean ShowPlayer = false; 
+    		
+    		if(args.length >= 2)
+    		{
+    			if(textParser.ParseWord("me", args[1])) //if "me" is used for player number it will use your number
+    			{
+    				phoneNumber = _phoneNumber; 
+    				ShowPlayer = true; 
+    			}
+    			else 
+    			{
+    				phoneNumber = args[1];
+    				ShowPlayer = true; 
+    			}
+    		}
+    		else 
+    		{
+    			SendOutSMS(_phoneNumber, "BEB> ERROR \r\n You must specify a phone number for player.");
+    			ShowPlayer = false; 
+    		}
+    		
+    		if(ShowPlayer)
+    		{
+	    		Player player = null;
+	    	    player = db.getPlayer(phoneNumber); //find the player
+	    	    if(player == null) //If the player does not exist
+	    	    {
+	    	    	SendOutSMS(_phoneNumber, "BEB> Player ["+phoneNumber+"] not in the player list.");
+	    	    }
+	    	    else  // otherwise print the player. 
+	    	    {
+	    	        SendOutSMS(_phoneNumber, player.toShortString());
+	    	    }
+    		}
+    		 
+        }
+    	
+//    	else if(CheckCommand("set story", args[0]))
+//        {
+//    		 SendOutSMS(phoneNumber, "BEB> PLAYER TABLE \r\n" + getAllPlayers());
+//    		 
+//        }
+    	//(CMD edit response -[id] -[attribute] -[new val])
+    	//else if(CheckCommand("edit response", args[0]))
+    	
+    	
+    	//-------Build All Responses 
+    	else if(CheckCommand("build responses", args[0]))
+        {
+    		db.ClearResponseTable();
+    		PopulateResponses(); 
+    		SendOutSMS(phoneNumber, "BEB> Response table Built");
+        }
+    	//-------Show All Responses 
+    	else if(CheckCommand("show response table", args[0]))
+        {
+    		printAllResponses(); 
+    		//SendOutSMS(phoneNumber, "BEB> PLAYER TABLE \r\n" + getAllResponses());
+        }
+    	else 
+    	{
+    		
+    		SendOutSMS(phoneNumber, "BEB> Bad Command. Try Again.");
+    	}
 	} 
+    
+    public boolean CheckCommand(String _word, String _message)
+	{
+		String word = COMMAND_PREFIX + _word;
+		if (_message.startsWith(word))
+		{
+			return true;
+		}
+		return false; 
+	}
+    
+    //Given a command with arguments "CMD set story -[player #] -[story location] parses the arguments  after the -. arg[0] is the command. ard[n] are the vars
+    public String[] ParseCommand(String _message)
+    {
+    	String[] args = _message.split(" -");
+    	return args; 
+    	
+    }
+    
     
     public void ParseMessage(String _phoneNumber, String _message)
     {
@@ -131,27 +239,120 @@ public class SQLActivity extends Activity {
     	player = db.getPlayer(_phoneNumber); //find the player
     	if(player == null)//&& _message.equals("BEB") //If the player does not exist, make a new one
     	{
+    		
+    		SendOutSMS(phoneNumber, "Welcome to BEB");
     		player = new Player();
-            player.setName(				 "rawr");
+            player.setName(				 "____");
             player.setPhoneNumber(	phoneNumber);
             player.setLastAnswer(		message);
             player.setStoryLocation(		"0");
             db.addPlayer(player); 
-            SendOutSMS(phoneNumber, "Welcome to BEB");
+            
+            
+            Response firstrResponse = db.getResponse("0");
+            SendOutSMS(phoneNumber, firstrResponse.getText());
+            
     	}
     	else  // otherwise update last message and story
     	{
     		//Story parsing here
-    		player.setLastAnswer(		message);
-            player.setStoryLocation(		"0");
-            db.updatePlayer(player);
             String outMessage = textParser.ParseMesssage(player, _message);
             SendOutSMS(phoneNumber, outMessage);
     	}
-    	
-    	
 
     }
+    
+    public String getAllPlayers()
+    {
+    	List<Player> players = db.getAllContacts();       
+    	String playersString = "";
+        for (Player cn : players) 
+        {
+        	playersString += ">" + cn.toShortString(); 
+        	playersString += "\r\n"; 
+        }
+        return playersString;
+    }
+    
+    public String getAllResponses()
+    {
+    	List<Response> responses = db.getAllResponses();    
+    	String responseString = "";
+    	for (Response r : responses) 
+        {
+    		responseString += ">" + r.toShortString(); 
+    		responseString += "\r\n"; 
+        }
+        return responseString;
+    }
+    
+    public void printAllPlayers()
+    {
+    	Log.d(">PLAYER_TABLE ", "Reading all players.."); 
+    	List<Player> players = db.getAllContacts();       
+         for (Player p : players) 
+         {// Writing Players to log
+             String log = "player n:" + p.getName() + " #: " + p.getPhoneNumber() + " la: \"" + p.getLastAnswer() + "\" sl: " + p.getStoryLocation();   
+             Log.d("Player: ", log);
+         }
+    }
+    
+    public void printAllResponses()
+    {
+    	Log.d(">RESPONSE_TABLE ", "Reading all responses..");  
+    	List<Response> responses = db.getAllResponses();       
+         for (Response r : responses) 
+         {// Writing Responses to log
+             String log = r.toShortString(); 
+             Log.d("Response: ", log);
+         }
+    }
+    
+    public void PopulateResponses()
+    {
+    	AddResponse( "0", 	"What is your name?", "none", "none", "none", "1a", "1nr");
+    	
+    	AddResponse( "1a", 	"Nice to meet you ;name;! Do you like pizza?"
+    			, "2y", "2n", "2m", "2a", "2nr");
+    	AddResponse( "1nr", "I shall call you X. Do you like pizza?"
+    			,"2y", "2n", "2m", "2a", "2nr");
+    	
+    	AddResponse( "2y", 	"Me Too! Glad to see another pizza fan out there. What is your favorite kind of Pizza ;name;?"
+    			, "none", "none", "none","3a","3nr");
+    	AddResponse( "2n", 	"To bad. More for me I guess. :) ;name;, If you had to pick a type what kind you it be?"
+    			,"none", "none", "none","3a","3nr");
+    	AddResponse( "2m", 	"I guess I hate some kinds too. Like ones with fish. What is your favorite kind of Pizza ;name;?"
+    			, "none", "none", "none","3a","3nr");
+    	AddResponse( "2a", 	"You didn't answer my question. Do you like pizza?"
+    			,"2y", "2n", "2m", "2a", "2nr");
+    	AddResponse( "2nr", "Are you dead?"
+    			,"none", "none", "none", "0", "0");
+    	
+    	AddResponse( "3a", "That is cool. I too am a fan of ;answer;. Do you want to start the demo over?"
+    			,"0", "4", "4", "4", "4");
+    	AddResponse( "3nr", "I suppose you are silent because you hate me. Do you want to start the demo over?"
+    			,"0", "4", "4", "4", "4");
+    	
+    	AddResponse( "4", "Do you want to start the demo over?" 		
+    			,"0", "4", "4", "4", "4");
+    	
+    	
+    	
+    }
+    
+    public void AddResponse(String _id,String  _text, String _yesLink,String _noLink,String _maybeLink, String _anyLink, String _noRespLink)
+    {
+    	Response response = new Response(); 
+    	response.setId(				_id);
+        response.setText(			_text);
+        response.setYesLink(		_yesLink);
+        response.setNoLink(			_noLink);
+        response.setMaybeLink(		_maybeLink);
+        response.setAnyLink(		_anyLink);
+        response.setNoResponseLink(	_noRespLink);
+        db.addResponse(response);
+    }
+    
     
    
 }
