@@ -7,6 +7,8 @@ public class Player {
     String phone_number;
     String last_answer; 
     String story_location; 
+    String old_story_location; 
+    String state; //Are they playing, afk, or paused. 
  
     // Empty constructor
     public Player(){
@@ -45,18 +47,36 @@ public class Player {
         this.last_answer = _last_answer;
     }
     
-  //getting last answer
+    //getting story_location
     public String getStoryLocation(){
         return this.story_location;
     }
-    // setting last answer
+    // setting story_location
     public void setStoryLocation(String _story_location){
         this.story_location = _story_location;
     }
     
+    //getting old_story_location
+    public String getOldStoryLocation(){
+        return this.old_story_location;
+    }
+    // setting story_location
+    public void setOldStoryLocation(String _old_story_location){
+        this.old_story_location = _old_story_location;
+    }
+    
+    //getting last state
+    public String getState(){
+        return this.state;
+    }
+    // setting last state
+    public void setState(String _state){
+        this.state = _state;
+    }
+    
     public String toShortString()
     {
-    	return getName() + " " + getPhoneNumber() + " [" + getStoryLocation() +"]\r\n\"" + getLastAnswer() + "\"";
+    	return getName() + " " + getPhoneNumber() + " [" + getStoryLocation() +"][" + getOldStoryLocation() +"] <"+ getState()+">\r\n\"" + getLastAnswer() + "\"";
     	
     }
     

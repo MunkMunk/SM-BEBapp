@@ -26,6 +26,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_PH_NO = "phone_number";
     private static final String KEY_LASTANSWER = "last_answer";
     private static final String KEY_STORYLOCATION = "story_location";
+    private static final String KEY_OLDSTORYLOCATION = "old_story_location";
+    private static final String KEY_STATE = "state";
     
     //Response table name
     private static final String TABLE_RESPONSES = "responses";
@@ -51,7 +53,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     			+ KEY_PH_NO + 			" TEXT,"
     			+ KEY_NAME  +			" TEXT,"
                 + KEY_LASTANSWER + 		" TEXT,"
-    			+ KEY_STORYLOCATION + 	" TEXT"
+    			+ KEY_STORYLOCATION + 	" TEXT,"
+    			+ KEY_OLDSTORYLOCATION + 	" TEXT,"
+    			+ KEY_STATE + 	" TEXT"
     			+ ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
         
@@ -90,6 +94,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, player.getName()); // Player Name
         values.put(KEY_LASTANSWER, player.getLastAnswer());
         values.put(KEY_STORYLOCATION, player.getStoryLocation());
+        values.put(KEY_OLDSTORYLOCATION, player.getOldStoryLocation());
+        values.put(KEY_STATE, player.getState());
         // Inserting Row
         db.insert(TABLE_CONTACTS, null, values);
         db.close(); // Closing database connection
@@ -117,17 +123,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
  
         Cursor cursor = db.query(TABLE_CONTACTS, new String[] {
-        		KEY_PH_NO, KEY_NAME,  KEY_LASTANSWER, KEY_STORYLOCATION}, KEY_PH_NO + "=?",
+        		KEY_PH_NO, KEY_NAME,  KEY_LASTANSWER, KEY_STORYLOCATION, KEY_OLDSTORYLOCATION, KEY_STATE}, KEY_PH_NO + "=?",
                 new String[] { _phoneNumber }, null, null, null, null);
 
         if (cursor.moveToFirst())
         {
         	Log.d(">> Data Handler"  , "Found Player #" + _phoneNumber);
         	Player player = new Player();
-            player.setPhoneNumber(	cursor.getString(0));
-            player.setName(			cursor.getString(1));
-            player.setLastAnswer(	cursor.getString(2));
-            player.setStoryLocation(cursor.getString(3));
+            player.setPhoneNumber(		cursor.getString(0));
+            player.setName(				cursor.getString(1));
+            player.setLastAnswer(		cursor.getString(2));
+            player.setStoryLocation(	cursor.getString(3));
+            player.setOldStoryLocation(	cursor.getString(4));
+            player.setState(			cursor.getString(5));
             // return contact
             cursor.close();
             db.close();
@@ -185,10 +193,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Player player = new Player();
-                player.setPhoneNumber(	cursor.getString(0));
-                player.setName(			cursor.getString(1));
-                player.setLastAnswer(	cursor.getString(2));
-                player.setStoryLocation(cursor.getString(3));
+                player.setPhoneNumber(		cursor.getString(0));
+                player.setName(				cursor.getString(1));
+                player.setLastAnswer(		cursor.getString(2));
+                player.setStoryLocation(	cursor.getString(3));
+                player.setOldStoryLocation(	cursor.getString(4));
+                player.setState(			cursor.getString(5));
                 
                 
                 // Adding contact to list
@@ -224,6 +234,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 response.setAnyLink(		cursor.getString(5));
                 response.setNoResponseLink(	cursor.getString(6));
                 
+                
                 // Adding contact to list
                 responseList.add(response);
             } while (cursor.moveToNext());
@@ -243,6 +254,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, player.getName()); // Player Name
         values.put(KEY_LASTANSWER, player.getLastAnswer());
         values.put(KEY_STORYLOCATION, player.getStoryLocation());
+        values.put(KEY_OLDSTORYLOCATION, player.getOldStoryLocation());
+        values.put(KEY_STATE, player.getState());
  
         int dU = db.update(TABLE_CONTACTS, values, KEY_PH_NO + " = ?",
                 new String[] { player.getPhoneNumber() });
@@ -283,7 +296,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     			+ KEY_PH_NO + 			" TEXT,"
     			+ KEY_NAME  +			" TEXT,"
                 + KEY_LASTANSWER + 		" TEXT,"
-    			+ KEY_STORYLOCATION + 	" TEXT"
+                + KEY_STORYLOCATION + 	" TEXT,"
+                + KEY_OLDSTORYLOCATION + 	" TEXT,"
+    			+ KEY_STATE + 	" TEXT"
     			+ ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
         db.close();
