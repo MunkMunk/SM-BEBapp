@@ -42,8 +42,11 @@ public class MainActivity extends Activity
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
+        finish();
+        /*
         setContentView(R.layout.activity_main);        
- 
+      
+       
         btnSendSMS = (Button) findViewById(R.id.btnSendSMS);
         txtPhoneNo = (EditText) findViewById(R.id.txtPhoneNo);
         txtMessage = (EditText) findViewById(R.id.txtMessage);
@@ -73,7 +76,7 @@ public class MainActivity extends Activity
             	}
         	}); 
        
-        
+        */
         	
     }
     

@@ -22,13 +22,50 @@ public class sendSMSActivity extends Activity {
         phoneNumber = getIntent().getExtras().getString("phoneNumber");
         message = getIntent().getExtras().getString("message");
         
-        sendSMS(phoneNumber,message);
+        splitMessage(phoneNumber,message);
         
         finish();
+    }
+    
+    private void splitMessage(String _phoneNumber, String _message)
+    {
+    	
+    	if(_message.length() < 150)
+    	{
+    		sendSMS(_phoneNumber, _message);
+    	}
+    	else
+    	{
+    		String[] words =  _message.split(" "); 
+    		String newMessage = ""; 
+    		for (String w : words)
+        	{
+    			if (newMessage.length() + w.length() > 155)
+    			{
+    				sendSMS(_phoneNumber, newMessage);
+    				newMessage = ""; 
+    			}
+    			newMessage += w + " "; 
+        	}
+    		if(_message.length() > 0)
+    		{
+    			sendSMS(_phoneNumber, newMessage);
+    		}
+    	}
+    	
+    	/*
+    	String newMessage  = _message.replaceAll("(.{30})", "$1|");
+        //System.out.println(newMessage);
+        String[] newMessages = newMessage.split("\\|");
+    	for (String n : newMessages)
+    	{
+    		sendSMS(phoneNumber, n);
+    	}
+    	*/
+    	
+     
         
-        
-        
-        
+    	
     }
     
     //---sends an SMS message to another device---

@@ -1,6 +1,7 @@
 package com.example.sm_bebapp;
 
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -43,31 +44,6 @@ public class SQLActivity extends Activity {
         printAllPlayers();
         //printAllResponses(); 
         finish();
-        
-       
-        
-        
-        /**
-         * CRUD Operations
-         * 
-        // Inserting Contacts
-        Log.d("Insert: ", "Inserting ..");
-        db.addContact(new Player("Ravi", "9100000000"));
-        db.addContact(new Player("Srinivas", "9199999999"));
-        db.addContact(new Player("Tommy", "9522222222"));
-        db.addContact(new Player("Karthik", "9533333333"));
- 
-        // Reading all contacts
-        Log.d("Reading: ", "Reading all contacts..");
-        List<Player> contacts = db.getAllContacts();       
- 
-        for (Player cn : contacts) {
-            String log = "Id: "+cn.getID()+" ,Name: " + cn.getName() + " ,Phone: " + cn.getPhoneNumber();
-                // Writing Contacts to log
-        Log.d("Name: ", log);
-        
-    	}
-         */
     }
     
     public void SendOutSMS(String _phoneNumber, String _outMessage)
@@ -87,17 +63,17 @@ public class SQLActivity extends Activity {
     public void ParseCommands(String _phoneNumber, String _message) 
     {
     	
-    	String[] args = ParseCommand(_message);
+    	String[] args = ParseCommand(_message);//splits the message on - to get the args
     	
     	//-------Clear All Players from the Player table
-    	if(CheckCommand("clear all players", args[0]))
+    	if(CheckCommand("delete all players", args[0]))
         {
     		db.ClearPlayerTable(); 	
-         	SendOutSMS(_phoneNumber, "BEB> Table Cleared"); 
+         	SendOutSMS(_phoneNumber, "BEB> Player table cleared"); 
          	
         }
     	//-------Delete a player 
-    	else if(CheckCommand("delete", args[0]))
+    	else if(CheckCommand("delete player", args[0]))
         {
     
     		String phoneNumber =""; 
@@ -107,12 +83,12 @@ public class SQLActivity extends Activity {
     		{
     			if(textParser.ParseWord("me", args[1]))
     			{
-    				phoneNumber = _phoneNumber; 
+    				phoneNumber = textParser.ParseNumber(_phoneNumber); 
     				DeletePlayer = true; 
     			}
     			else 
     			{
-    				phoneNumber = args[1];
+    				phoneNumber = textParser.ParseNumber(args[1]);
     				DeletePlayer = true; 
     			}
     		}
@@ -138,7 +114,7 @@ public class SQLActivity extends Activity {
     		}
         }
     	//-------Show All PLayers 
-    	else if(CheckCommand("show player table", args[0]))
+    	else if(CheckCommand("show all players", args[0]))
         {
     		 SendOutSMS(phoneNumber, "BEB> PLAYER TABLE \r\n" + getAllPlayers());
     		 
@@ -153,12 +129,12 @@ public class SQLActivity extends Activity {
     		{
     			if(textParser.ParseWord("me", args[1])) //if "me" is used for player number it will use your number
     			{
-    				phoneNumber = _phoneNumber; 
+    				phoneNumber = textParser.ParseNumber(_phoneNumber); 
     				ShowPlayer = true; 
     			}
     			else 
     			{
-    				phoneNumber = args[1];
+    				phoneNumber = textParser.ParseNumber(args[1]);
     				ShowPlayer = true; 
     			}
     		}
@@ -184,11 +160,18 @@ public class SQLActivity extends Activity {
     		 
         }
     	//-------Build All Responses 
-    	else if(CheckCommand("build responses", args[0]))
+    	else if(CheckCommand("build response table", args[0]))
         {
     		db.ClearResponseTable();
-    		rtBuilder.PopulateResponses(); 
-    		SendOutSMS(phoneNumber, "BEB> Response table Built");
+    		if(rtBuilder.PopulateResponses(args[1]))
+    		{
+    			SendOutSMS(phoneNumber, "BEB> Response table Built"); 
+    		}
+    		else 
+    		{
+    			SendOutSMS(phoneNumber, "BEB> ERROR \r\n "+args[1]+"not correct id for a table. Try \"beb\" or \"test\"");
+    		}
+    		
         }
     	//-------Show All Responses 
     	else if(CheckCommand("show response table", args[0]))
@@ -206,7 +189,8 @@ public class SQLActivity extends Activity {
     public boolean CheckCommand(String _word, String _message)
 	{
 		String word = COMMAND_PREFIX + _word;
-		if (_message.startsWith(word))
+		word = word.toLowerCase(Locale.getDefault()); 
+		if (_message.toLowerCase(Locale.getDefault()).startsWith(word))
 		{
 			return true;
 		}

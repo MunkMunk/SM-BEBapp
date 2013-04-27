@@ -7,9 +7,9 @@ import android.util.Log;
 public class TextParser {
 	
 	
-	String yesList 		= "(yes|yeah|y|yup|yuppers|true|correct)"; 
+	String yesList 		= "(yes|yeah|y|yup|yuppers|true|correct|sure)"; 
 	String noList 		= "(no|nope|n|nah|noo|negative|false|wrong)"; 
-	String maybeList 	= "(maybe|sometimes|not sure|can't tell|possibly|I don't know)"; 
+	String maybeList 	= "(maybe|sometimes|not sure|can't tell|possibly|I don't know|kinda|kind of|kindof|sorta|sortof|sort of)"; 
 	String pauseList    = "(stop|piss off|go away|turn off|leave me|pause)";
 	String unPauseList  = "(unpause|resume|go|start|un pause)"; 
 	String restartList  = "(restart|re start|start over|startover|BEB|new game|newgame)"; 
@@ -183,6 +183,10 @@ public class TextParser {
 		{
 			_player.setName(BuildName(_message)); 
 		}
+		else if(_currentResponse.getId().equals("1a"))
+		{
+			_player.setName(BuildName(_message)); 
+		}
 		
 		
 		
@@ -256,7 +260,40 @@ public class TextParser {
 			
 		}
 		Log.d(">> BUILD NAME"  , "Built new name" +_message+ " -> "+name);
-		return name;
+		return name.trim();
 	}
+	
+	public String ParseNumber( String _phonenumber )
+	{
+		String phonenumber = _phonenumber;//.split("+")[0]; //remove + 
+		String[] phonenumberchunks = phonenumber.split("-");//ex: 505-573-3247
+		phonenumber = "";
+		for (String n : phonenumberchunks) 
+		{
+			 phonenumber += n; 
+		}
+		
+		if(phonenumber.length() == 10)//ex: 15055733247
+		{
+			return "+1" + phonenumber; //ex: +15055733247
+		}
+		else if(phonenumber.length() == 11 && phonenumber.startsWith("1"))//ex: 15055733247
+		{
+			return "+" + phonenumber; //ex: +15055733247
+		}
+		else if (phonenumber.length() == 12 && phonenumber.startsWith("+"))//ex: +5055733247
+		{
+			return phonenumber;//ex: +5055733247
+		}
+		else
+		{
+			return "ERROR! "+phonenumber+" is not a phone number."; 
+		}
+		
+		
+	
+	}
+
+	
 
 }
