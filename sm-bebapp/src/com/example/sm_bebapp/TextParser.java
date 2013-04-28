@@ -11,7 +11,8 @@ public class TextParser {
 	String noList 		= "(no|nope|n|nah|noo|negative|false|wrong)"; 
 	String maybeList 	= "(maybe|sometimes|not sure|can't tell|possibly|I don't know|kinda|kind of|kindof|sorta|sortof|sort of)"; 
 	
-	
+	private static final String PLAYERSTATE_ACTIVE 		= "active";
+	private static final String PLAYERSTATE_PAUSED 		= "paused";
 	
 	
 	DatabaseHandler db; 
@@ -94,14 +95,28 @@ public class TextParser {
 	public String updateAnswer(Player _player, String _message, Response _currentResponse,  String _responseLink, String _responseType)
 	{
 	    //---------- Checks to see if special player data need to be stored based on the response id. SO UGLY!! 
-		if(_currentResponse.getId().equals("0"))//Store the players name. 
+		//if(_currentResponse.getId().equals("0"))//Store the players name. 
+//		{
+//			_player.setName(BuildName(_message)); 
+//		}
+		if(_currentResponse.getId().equals("END"))//If the game is over pause the player. 
 		{
-			_player.setName(BuildName(_message)); 
+			_player.setState(PLAYERSTATE_PAUSED); 
+			Log.d(">> PLAYER ENDED", _player.getPhoneNumber() + " ended the game. Seting to paused.");
+			
 		}
-		else if(_currentResponse.getId().equals("1a"))
+		else if(_currentResponse.getId().equals("1a"))//stor the name for the name question. Hacky! I know. 
 		{
-			_player.setName(BuildName(_message)); 
+			if(_message.equals("|none|"))
+			{
+				_player.setName(BuildName("X"));
+			}
+			else 
+			{
+				_player.setName(BuildName(_message)); 
+			}
 		}
+		
 		
 		if(_responseLink.equals("none"))
 	    {

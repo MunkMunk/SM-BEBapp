@@ -86,10 +86,11 @@ public class ResponseTreeBuilder {
     	
     	AddResponse( "21a", "none", "none", "none", "22a", "22a",	"(We know that you are motivated by drinking local, activating your imagination andbeing social.)  You need to wake up to reality, [name], we're not what Y said we are. We actually help people like you break out of the prison of their minds.");
     	
-    	AddResponse( "22a", "none", "none", "none", "d2", "d2",		"Remembrance restores possibility to the past, making whathappened incomplete and completing what never was. Tonight I need you toteach someone a song from your childhood, sing it together, and ask thatperson to do the same for you. Both of you call us and sing us the songs together on our voicemeil and we will distribute the information. Then, meet us at Jimmy's for a toast to the future.");
+    	AddResponse( "22a", "none", "none", "none", "23a", "23a",		"Remembrance restores possibility to the past, making whathappened incomplete and completing what never was. Tonight I need you toteach someone a song from your childhood, sing it together, and ask thatperson to do the same for you. Both of you call us and sing us the songs together on our voicemeil and we will distribute the information. Then, meet us at Jimmy's for a toast to the future.");
     	
-    	AddResponse( "d2", "-1", "d2", "d2", "d2", "d2",			"BEB> end of first draft. text Restart to restart");
+    	AddResponse( "23a", "END", "END", "END", "END", "END",			"BEB> end of first draft. text Restart to restart");
 		
+    	AddResponse( "END", "END", "END", "END", "END", "END",			"");
     }
 	
 	public void PopulateTestResponses()
@@ -122,7 +123,10 @@ public class ResponseTreeBuilder {
     	AddResponse( "p6a","p4", "p4", "p4", "p4", "p4", 			";lastanswer;, is not a good attitude to have, ;name;");
     	AddResponse( "p6nr","p4", "p4", "p4", "p4", "p4", 			"I suppose you are silent because you hate me. Do you want to start the demo over?");
   
-    	AddResponse( "p4", "p0", "p4", "p4", "p4", "p4", 			"BEB> Demo Finished. To resume, text BEB to this number. Thank you for playing.");		
+    	AddResponse( "p4", "END", "END", "END", "END", "END", 		"BEB> Demo Finished. To resume, text BEB to this number. Thank you for playing.");		
+    	
+    	AddResponse( "END", "END", "END", "END", "END", "END", "");
+    			
     }
 	
     public void AddResponse(String _id, String _yesLink,String _noLink,String _maybeLink, String _anyLink, String _noRespLink,String  _text)

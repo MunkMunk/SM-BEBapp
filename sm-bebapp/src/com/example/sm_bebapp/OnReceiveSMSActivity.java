@@ -223,14 +223,21 @@ public class OnReceiveSMSActivity extends Activity {
     public void AdminCMD_BuildResponseTable(String _phoneNumber,  String[] args)
     {
     	db.ClearResponseTable();
-		if(rtBuilder.PopulateResponses(args[1]))
+    	if(args.length >= 2)
 		{
-			SendOutSMS(_phoneNumber, "BEB> Response table Built"); 
+	    	if(rtBuilder.PopulateResponses(args[1]))
+			{
+				SendOutSMS(_phoneNumber, "BEB> Response table Built"); 
+			}
+			else 
+			{
+				SendOutSMS(_phoneNumber, "BEB> ERROR \r\n "+args[1]+"not correct id for a table. Try \"beb\" or \"test\"");	
+			}
 		}
-		else 
-		{
-			SendOutSMS(_phoneNumber, "BEB> ERROR \r\n "+args[1]+"not correct id for a table. Try \"beb\" or \"test\"");	
-		}
+    	else
+    	{
+    		SendOutSMS(_phoneNumber, "BEB> ERROR \r\n Table id must be specified. Try \"beb\" or \"test\" ");	
+    	}
     }
     public void AdminCMD_ShowResponseTable(String _phoneNumber,  String[] args)
     {

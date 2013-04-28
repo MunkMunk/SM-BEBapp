@@ -30,6 +30,7 @@ public class OnTimerActivity extends Activity {
         Log.d(">> TIMER"  , "Time to update players");
         UpdatePlayers();
         StartNextTimer();
+        printAllPlayers();
         finish(); 
     }
     
@@ -61,7 +62,7 @@ public class OnTimerActivity extends Activity {
     	PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
     	Calendar time = Calendar.getInstance();
     	time.setTimeInMillis(System.currentTimeMillis());
-    	time.add(Calendar.SECOND, 15);
+    	time.add(Calendar.MINUTE, 30);
     	alarmMgr.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
     }
 
@@ -79,4 +80,49 @@ public class OnTimerActivity extends Activity {
     	startActivity(sendIntent);
     	Log.d(">> MESSAGE OUT"  , "To " + _phoneNumber + " : \"" +_outMessage +"\"");
     }
+    
+     //------ Util DB calls
+    public String getAllPlayers()
+    {
+    	List<Player> players = db.getAllPlayers();       
+    	String playersString = "";
+        for (Player cn : players) 
+        {
+        	playersString += ">" + cn.toShortString(); 
+        	playersString += "\r\n"; 
+        }
+        return playersString;
+    }
+    public String getAllResponses()
+    {
+    	List<Response> responses = db.getAllResponses();    
+    	String responseString = "";
+    	for (Response r : responses) 
+        {
+    		responseString += ">" + r.toShortString(); 
+    		responseString += "\r\n"; 
+        }
+        return responseString;
+    } 
+    public void printAllPlayers()
+    {
+    	Log.d(">> PLAYER_TABLE ", "Reading all players.."); 
+    	List<Player> players = db.getAllPlayers();       
+         for (Player p : players) 
+         {// Writing Players to log
+             String log = p.toShortString();
+             Log.d("Player: ", log);
+         }
+    }
+    public void printAllResponses()
+    {
+    	Log.d(">> RESPONSE_TABLE ", "Reading all responses..");  
+    	List<Response> responses = db.getAllResponses();       
+         for (Response r : responses) 
+         {// Writing Responses to log
+             String log = r.toShortString(); 
+             Log.d("Response: ", log);
+         }
+    }
+    
 }

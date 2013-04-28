@@ -29,8 +29,11 @@ public class SendSMSActivity extends Activity {
     
     private void splitMessage(String _phoneNumber, String _message)
     {
-    	
-    	if(_message.length() < 150)
+    	if(_message.length() == 0)
+    	{
+    		
+    	}
+    	else if(_message.length() < 150)
     	{
     		sendSMS(_phoneNumber, _message);
     	}
