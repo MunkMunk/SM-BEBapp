@@ -371,7 +371,7 @@ public class OnReceiveSMSActivity extends Activity {
     //------ Util DB calls
     public String getAllPlayers()
     {
-    	List<Player> players = db.getAllContacts();       
+    	List<Player> players = db.getAllPlayers();       
     	String playersString = "";
         for (Player cn : players) 
         {
@@ -394,7 +394,7 @@ public class OnReceiveSMSActivity extends Activity {
     public void printAllPlayers()
     {
     	Log.d(">> PLAYER_TABLE ", "Reading all players.."); 
-    	List<Player> players = db.getAllContacts();       
+    	List<Player> players = db.getAllPlayers();       
          for (Player p : players) 
          {// Writing Players to log
              String log = p.toShortString();
@@ -423,7 +423,7 @@ public class OnReceiveSMSActivity extends Activity {
         sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.SendSMSActivity");
     	sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	startActivity(sendIntent);
-    	Log.d(">> MESSAGE OUT"  , "To " + phoneNumber + " : \"" +_outMessage +"\"");
+    	Log.d(">> MESSAGE OUT"  , "To " + _phoneNumber + " : \"" +_outMessage +"\"");
     }
     
     

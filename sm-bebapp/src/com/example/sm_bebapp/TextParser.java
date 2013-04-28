@@ -23,29 +23,6 @@ public class TextParser {
 	
 	public String ParseMesssage(Player _player, String _message)
 	{
-		
-		
-		/*
-		}
-		else //on normal response from player.
-		{
-			if(_player.getState().equals(PLAYERSTATE_PAUSED))
-			{
-				return  "BEB> The game is Paused. To resume text UnPause or Restart to restart";
-			}
-			else
-			{
-				return ExicuteResponseTree(_player, _message);
-			}
-		}
-		*/
-		return "yep"; 
-		
-	}
-	
-	
-	public String ExicuteResponseTree(Player _player, String _message)
-	{
 		String storyId = _player.getStoryLocation();
 		Response currentResponse = db.getResponse(storyId);
 		
@@ -82,7 +59,7 @@ public class TextParser {
 	//Parses the message for yes or nos or maybes
 	public int ParseYesNo(String _message)
 	{
-		if (_message.equals(""))
+		if (_message.equals("|none|"))
 		{
 			return 0; //"none"; 
 		}
@@ -125,9 +102,6 @@ public class TextParser {
 		{
 			_player.setName(BuildName(_message)); 
 		}
-		
-		
-		
 		
 		if(_responseLink.equals("none"))
 	    {

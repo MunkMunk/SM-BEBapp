@@ -15,7 +15,13 @@ public class TimerReciever extends BroadcastReceiver {
 	{
        //Toast.makeText(context, "Alarm went off", Toast.LENGTH_SHORT).show();
 
-		
+		Intent sendIntent = new Intent();
+    	
+    	//sendIntent.setClass(context, SendSMSActivity.class);
+    	sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.OnTimerActivity");
+    	//sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.SendSMSActivity");
+    	sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    	context.startActivity(sendIntent);
 		
         //SMS send here/ 
 		 // Next Activity call

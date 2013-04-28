@@ -181,7 +181,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     
     // Getting All Players
-    public List<Player> getAllContacts() {
+    public List<Player> getAllPlayers() {
         List<Player> playerList = new ArrayList<Player>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS;
