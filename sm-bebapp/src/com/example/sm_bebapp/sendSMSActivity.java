@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 
 
-public class sendSMSActivity extends Activity {
+public class SendSMSActivity extends Activity {
 
 	String phoneNumber, message;
 	

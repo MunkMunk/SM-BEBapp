@@ -7,15 +7,12 @@ import android.util.Log;
 public class TextParser {
 	
 	
-	String yesList 		= "(yes|yeah|y|yup|yuppers|true|correct|sure)"; 
+	String yesList 		= "(yes|yeah|y|yup|yep|yuppers|true|correct|sure)"; 
 	String noList 		= "(no|nope|n|nah|noo|negative|false|wrong)"; 
 	String maybeList 	= "(maybe|sometimes|not sure|can't tell|possibly|I don't know|kinda|kind of|kindof|sorta|sortof|sort of)"; 
-	String pauseList    = "(stop|piss off|go away|turn off|leave me|pause)";
-	String unPauseList  = "(unpause|resume|go|start|un pause)"; 
-	String restartList  = "(restart|re start|start over|startover|BEB|new game|newgame)"; 
 	
-	private static final String PLAYERSTATE_ACTIVE 		= "active";
-	private static final String PLAYERSTATE_PAUSED 		= "paused";
+	
+	
 	
 	DatabaseHandler db; 
 	
@@ -28,37 +25,7 @@ public class TextParser {
 	{
 		
 		
-		if(CheckIfPlayerPausedGame(_player, _message))
-		{
-			_player.setState(PLAYERSTATE_PAUSED);
-			db.updatePlayer(_player);
-			Log.d(">> RESPONSE"  , "Player " + _player.getPhoneNumber() + " has paused the game.");
-			return "BEB> Game Paused. You can resume at any time by texting UnPause to resume or Restart to restart";
-		}
-		else if(CheckIfPlayerUnPausedGame(_player, _message))
-		{
-			_player.setState(PLAYERSTATE_ACTIVE);
-			_player.setStoryLocation(_player.getOldStoryLocation());
-			db.updatePlayer(_player);
-			Log.d(">> RESPONSE"  , "Player " + _player.getPhoneNumber() + " has resumed the game.");
-			return "BEB> Game Resumed:\r\n" + ExicuteResponseTree(_player, _player.getLastAnswer());
-		}
-		else if (CheckIfPlayerRestartsGame(_player, _message))
-		{
-			if(_player.getState().equals(PLAYERSTATE_PAUSED))
-			{
-				_player.setState(PLAYERSTATE_ACTIVE);
-				_player.setStoryLocation("-1");
-				db.updatePlayer(_player);
-				Log.d(">> RESPONSE"  , "Player " + _player.getPhoneNumber() + " has restarted the game.");
-				return "BEB> Game Restarted:\r\n" + ExicuteResponseTree(_player, _player.getLastAnswer());
-			}
-			else
-			{
-				_player.setState(PLAYERSTATE_PAUSED);
-				db.updatePlayer(_player);
-				return "BEB> Are you sure you want to restart the game? You can resume at any time by texting Unpause to resume or Restart to restart.";
-			}
+		/*
 		}
 		else //on normal response from player.
 		{
@@ -71,36 +38,8 @@ public class TextParser {
 				return ExicuteResponseTree(_player, _message);
 			}
 		}
-		
-		
-		
-	}
-	public boolean CheckIfPlayerPausedGame(Player _player, String _message)
-	{
-		if(ParseWord(pauseList, _message) && !(_player.getState().equals(PLAYERSTATE_PAUSED)) )
-		{
-			return true; 
-		}
-		return false; 
-	}
-	public boolean CheckIfPlayerUnPausedGame(Player _player, String _message)
-	{
-		if(ParseWord(unPauseList, _message) && !(_player.getState().equals(PLAYERSTATE_ACTIVE)) )
-		{
-			return true; 
-		}
-		return false; 
-	}
-	public boolean CheckIfPlayerRestartsGame(Player _player, String _message)
-	{
-		if(ParseWord(restartList, _message))
-		{
-			return true; 
-		}
-		else 
-		{
-			return false; 
-		}
+		*/
+		return "yep"; 
 		
 	}
 	
@@ -262,7 +201,7 @@ public class TextParser {
 		return name.trim();
 	}
 	
-	public String ParseNumber( String _phonenumber )
+	public String FormatPhoneNumber( String _phonenumber )
 	{
 		String phonenumber = _phonenumber;//.split("+")[0]; //remove + 
 		String[] phonenumberchunks = phonenumber.split("-");//ex: 505-573-3247

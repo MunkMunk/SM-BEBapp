@@ -9,7 +9,7 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
  
-public class SmsReceiver extends BroadcastReceiver
+public class SMSReceiver extends BroadcastReceiver
 {
 	
 	
@@ -37,9 +37,9 @@ public class SmsReceiver extends BroadcastReceiver
                 Intent sendIntent = new Intent();
             	sendIntent.putExtra("phoneNumber", msgs[i].getOriginatingAddress());
             	sendIntent.putExtra("message", msgs[i].getMessageBody().toString());
-            	//sendIntent.setClass(context, sendSMSActivity.class);
-            	sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.SQLActivity");
-            	//sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.sendSMSActivity");
+            	//sendIntent.setClass(context, SendSMSActivity.class);
+            	sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.OnReceiveSMSActivity");
+            	//sendIntent.setClassName("com.example.sm_bebapp", "com.example.sm_bebapp.SendSMSActivity");
             	sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             	context.startActivity(sendIntent);
                 

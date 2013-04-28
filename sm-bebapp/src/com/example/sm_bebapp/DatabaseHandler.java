@@ -128,7 +128,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst())
         {
-        	Log.d(">> Data Handler"  , "Found Player #" + _phoneNumber);
+        	Log.d(">> DATA HANDLER"  , "Found Player #" + _phoneNumber);
         	Player player = new Player();
             player.setPhoneNumber(		cursor.getString(0));
             player.setName(				cursor.getString(1));
@@ -143,7 +143,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } 
         else
         {
-        	Log.d(">> Data Handler"  , "No Player with #" + _phoneNumber);
+        	Log.d(">> DATA HANDLER"  , "No Player with #" + _phoneNumber);
         	return null; 
         }
     }

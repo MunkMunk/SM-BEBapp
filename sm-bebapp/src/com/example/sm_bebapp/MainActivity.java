@@ -81,7 +81,7 @@ public class MainActivity extends Activity
                 	Intent intent = new Intent();
                 	intent.putExtra("phoneNumber", phoneNo);
                 	intent.putExtra("message", message);
-                	intent.setClass(getApplicationContext(), sendSMSActivity.class);
+                	intent.setClass(getApplicationContext(), SendSMSActivity.class);
                 	startActivity(intent);
                 	
                 }
