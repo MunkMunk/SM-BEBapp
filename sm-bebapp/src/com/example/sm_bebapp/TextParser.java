@@ -22,7 +22,6 @@ public class TextParser {
 	public TextParser(DatabaseHandler _db)
 	{
 		db = _db; 
-		
 	}
 	
 	public String ParseMesssage(Player _player, String _message)

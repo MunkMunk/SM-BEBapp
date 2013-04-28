@@ -52,29 +52,24 @@ public class sendSMSActivity extends Activity {
     			sendSMS(_phoneNumber, newMessage);
     		}
     	}
-    	
-    	/*
-    	String newMessage  = _message.replaceAll("(.{30})", "$1|");
-        //System.out.println(newMessage);
-        String[] newMessages = newMessage.split("\\|");
-    	for (String n : newMessages)
-    	{
-    		sendSMS(phoneNumber, n);
-    	}
-    	*/
-    	
-     
-        
-    	
+     	
     }
     
     //---sends an SMS message to another device---
     private void sendSMS(String phoneNumber, String message)
     {        
-        PendingIntent pi = PendingIntent.getActivity(this, 0,
-            new Intent(this, MainActivity.class), 0);                
+        PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, RestActivity.class), 0);                
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(phoneNumber, null, message, pi, null);        
     } 
+    
+//    //---sends an SMS message to another device---
+//    private void sendSMS(String phoneNumber, String message)
+//    {        
+//        PendingIntent pi = PendingIntent.getActivity(this, 0,
+//        new Intent(this, MainActivity.class), 0);                
+//        SmsManager sms = SmsManager.getDefault();
+//        sms.sendTextMessage(phoneNumber, null, message, pi, null);        
+//    } 
 	
 }

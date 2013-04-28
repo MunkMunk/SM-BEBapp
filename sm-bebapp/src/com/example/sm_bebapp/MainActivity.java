@@ -23,7 +23,12 @@ public class MainActivity extends Activity {
 }
 */
 
+import java.util.Calendar;
+
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -42,8 +47,19 @@ public class MainActivity extends Activity
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
-        finish();
-        /*
+        
+        AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+    	Intent intent = new Intent(this, TimerReciever.class);
+    	PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+    	Calendar time = Calendar.getInstance();
+    	time.setTimeInMillis(System.currentTimeMillis());
+    	time.add(Calendar.SECOND, 30);
+    	alarmMgr.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
+    	
+        
+        
+        //finish();
+        
         setContentView(R.layout.activity_main);        
       
        
@@ -76,7 +92,7 @@ public class MainActivity extends Activity
             	}
         	}); 
        
-        */
+        
         	
     }
     
