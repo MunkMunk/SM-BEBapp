@@ -95,7 +95,7 @@ public class TextParser {
 	public String updateAnswer(Player _player, String _message, Response _currentResponse,  String _responseLink, String _responseType)
 	{
 	    //---------- Checks to see if special player data need to be stored based on the response id. SO UGLY!! 
-		//if(_currentResponse.getId().equals("0"))//Store the players name. 
+//		if(_currentResponse.getId().equals("0"))//Store the players name. 
 //		{
 //			_player.setName(BuildName(_message)); 
 //		}
@@ -105,7 +105,7 @@ public class TextParser {
 			Log.d(">> PLAYER ENDED", _player.getPhoneNumber() + " ended the game. Seting to paused.");
 			
 		}
-		else if(_currentResponse.getId().equals("1a"))//stor the name for the name question. Hacky! I know. 
+		else if(_currentResponse.getId().equals("1a") || _currentResponse.getId().equals("p0") )//stor the name for the name question. Hacky! I know. 
 		{
 			if(_message.equals("|none|"))
 			{

@@ -251,7 +251,7 @@ public class OnReceiveSMSActivity extends Activity {
     {
     	SendOutSMS(_phoneNumber, "Welcome to BEB");
     	Player player = new Player();
-        player.setName(				 "____");
+        player.setName(				 "|none|");
         player.setPhoneNumber(	_phoneNumber);
         player.setLastAnswer(		"|none|");
         player.setStoryLocation(		"-1");

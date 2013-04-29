@@ -63,7 +63,7 @@ public class OnTimerActivity extends Activity {
     	PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
     	Calendar time = Calendar.getInstance();
     	time.setTimeInMillis(System.currentTimeMillis());
-    	time.add(Calendar.SECOND, 45);
+    	time.add(Calendar.MINUTE, 1);
     	alarmMgr.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
     }
 

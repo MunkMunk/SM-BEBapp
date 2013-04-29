@@ -111,7 +111,7 @@ public class ResponseTreeBuilder {
     	AddResponse( "p3a","p5y", "p5n", "p5m", "p5a", "p5nr", 		"That is cool. I too am a fan of ;lastanswer;. Pizza also has lots of cheese. Are you Lactose intolerant?" );
     	AddResponse( "p3nr","0", "p4", "p4", "p4", "p4", 			"I suppose you are silent because you hate me. Pizza also has lots of cheese. Are you Lactose intolerant?");
     	
-    	AddResponse( "p5y","p6y", "p6n", "p6m", "p6a", "p6nr", 		"I feel for you, ;name;, may brother was Lactose Intolerant. And he died in the great war. Milk sucks do you agree?" );
+    	AddResponse( "p5y","p6y", "p6n", "p6m", "p6a", "p6nr", 		"I feel for you, ;name;, my brother was Lactose Intolerant. And he died in the great war. Milk sucks do you agree?" );
     	AddResponse( "p5n","p4", "p4", "p4", "p4", "p4", 			"Good, It would be a shame if you were. I don't know if I could be freinds with you. Don't make me choose between you and Icecream. I'll do it!" );
     	AddResponse( "p5m","p4", "p4", "p4", "p4", "p4", 			"Well there is only one way to find out my freind! And its a long and dangerous road. May the force be with you." );
     	AddResponse( "p5a","p4", "p4", "p4", "p4", "p4", 			"Your rants do not concern me. I am a free spirit!! You cannot keep me down, maaaaaaaaaaaaaaaan!!" );
