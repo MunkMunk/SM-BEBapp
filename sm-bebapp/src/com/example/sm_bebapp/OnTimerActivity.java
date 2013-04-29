@@ -54,7 +54,8 @@ public class OnTimerActivity extends Activity {
         }
     	
     }
-    
+
+    //------- Start the next timer. 
     public void StartNextTimer()
     {
     	AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
@@ -62,12 +63,11 @@ public class OnTimerActivity extends Activity {
     	PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
     	Calendar time = Calendar.getInstance();
     	time.setTimeInMillis(System.currentTimeMillis());
-    	time.add(Calendar.MINUTE, 30);
+    	time.add(Calendar.SECOND, 45);
     	alarmMgr.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
     }
 
-    
-  //------- Magic send SMS function 
+    //------- Magic send SMS function 
     public void SendOutSMS(String _phoneNumber, String _outMessage)
     {
     	 // Next Activity call

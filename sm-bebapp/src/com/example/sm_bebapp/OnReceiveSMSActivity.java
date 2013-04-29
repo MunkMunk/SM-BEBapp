@@ -42,9 +42,12 @@ public class OnReceiveSMSActivity extends Activity {
         if(CheckAdminCommand(phoneNumber,message) ==  false)//Check if admin command and execute command if it is. Continue otherwise
         {
         	player = GetPlayer(phoneNumber); //get the player. returns null if player was not found. 
-        	if(player == null)// if player was not found
+        	if(player == null)// if player was not found 
         	{
-        		AddNewPlayer(phoneNumber, message); 
+        		if(textParser.ParseWord("BEB", message))//and the incoming message it BEB  
+        		{
+        			AddNewPlayer(phoneNumber, message); //add the player. 
+        		}
         	}
         	else 
         	{
@@ -55,17 +58,7 @@ public class OnReceiveSMSActivity extends Activity {
         	}
         }
         
-        
-//    	if(CheckIfAdminCommand("", message))//Check Admin Commands first. If message is a command, skip story update. 
-//    	{
-//    		ParseCommands(phoneNumber, message);
-//    	}
-//    	else if (CheckPlayerCommand())
-//    	{
-//    		ParseMessage(phoneNumber,  message); //then parse story 
-//    	}
-        
-        
+       
     	// Reading all contacts
         printAllPlayers();
         //printAllResponses(); 
@@ -261,8 +254,8 @@ public class OnReceiveSMSActivity extends Activity {
         player.setName(				 "____");
         player.setPhoneNumber(	_phoneNumber);
         player.setLastAnswer(		"|none|");
-        player.setStoryLocation(		"0");
-        player.setOldStoryLocation(		"0");
+        player.setStoryLocation(		"-1");
+        player.setOldStoryLocation(		"-1");
         player.setState(		   "active");
         Log.d(">> NEW PLAYER ", _phoneNumber); 
         db.addPlayer(player); 
