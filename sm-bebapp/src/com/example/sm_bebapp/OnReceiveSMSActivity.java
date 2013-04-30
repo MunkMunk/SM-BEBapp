@@ -21,7 +21,7 @@ public class OnReceiveSMSActivity extends Activity {
 	private static final String PLAYERSTATE_PAUSED 		= "paused";
    
 	private static final String pauseList    = "(stop|piss off|go away|turn off|leave me|pause)";
-	private static final String unPauseList  = "(unpause|resume|go|start|un pause)"; 
+	private static final String unPauseList  = "(unpause|resume|go|start|un pause|continue)"; 
 	private static final String restartList  = "(restart|re start|start over|startover|BEB|new game|newgame)"; 
 	
 	

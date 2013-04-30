@@ -4,12 +4,14 @@ public class Response {
 	
 	String id = "";
 	String text = ""; 
+	String time = "";
 	
 	String yesLink = "";
 	String noLink = "";
 	String maybeLink = "";
 	String anyLink = "";
 	String noResponseLink = "";
+	
 	
 	
 	public Response()
@@ -32,7 +34,7 @@ public class Response {
         this.id = _id;
     }
 	
- // getting text
+    // getting text
     public String getText(){
         return this.text;
     }
@@ -40,13 +42,20 @@ public class Response {
     public void setText(String _text){
         this.text = _text;
     }
+    public String getTime()
+    {
+    	return this.time; 
+    }
+    public void setTime(String _time)
+    {
+    	this.time = _time;
+    }
+    
+    
     // getting yesLink
     public String getYesLink(){
   
-        return this.yesLink;
-        
-    	
-    	
+        return this.yesLink;	
     }
     // setting yesLink
     public void setYesLink(String _yesLink){

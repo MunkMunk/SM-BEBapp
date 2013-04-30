@@ -34,6 +34,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //Response table columns names
     private static final String KEY_ID = "id";
     private static final String KEY_TEXT = "text"; 
+    private static final String KEY_TIME = "time"; 
     private static final String KEY_YES_LINK = "yeslink";
     private static final String KEY_NO_LINK = "nolink";
     private static final String KEY_MAYBE_LINK = "maybelink";
@@ -62,7 +63,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_RESPONSE_TABLE = "CREATE TABLE " + TABLE_RESPONSES + "("
     			+ KEY_ID + 				" TEXT,"
     			+ KEY_TEXT  +			" TEXT,"
-                + KEY_YES_LINK + 		" TEXT,"
+                + KEY_TIME  +			" TEXT,"
+    			+ KEY_YES_LINK + 		" TEXT,"
     			+ KEY_NO_LINK + 		" TEXT,"
     			+ KEY_MAYBE_LINK + 		" TEXT,"
     			+ KEY_ANY_LINK + 		" TEXT,"
@@ -106,8 +108,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
  
         ContentValues values = new ContentValues();
-        values.put(KEY_ID, response.getId()); // Player Phone
-        values.put(KEY_TEXT, response.getText()); // Player Name
+        values.put(KEY_ID, response.getId()); 
+        values.put(KEY_TEXT, response.getText()); 
+        values.put(KEY_TIME, response.getText()); 
         values.put(KEY_YES_LINK, response.getYesLink());
         values.put(KEY_NO_LINK, response.getNoLink());
         values.put(KEY_MAYBE_LINK, response.getMaybeLink());
@@ -153,7 +156,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
  
         Cursor cursor = db.query(TABLE_RESPONSES, new String[] {
-        		KEY_ID, KEY_TEXT,  KEY_YES_LINK, KEY_NO_LINK, KEY_MAYBE_LINK, KEY_ANY_LINK, KEY_NORESP_LINK}, KEY_ID + "=?",
+        		KEY_ID, KEY_TEXT, KEY_TIME, KEY_YES_LINK, KEY_NO_LINK, KEY_MAYBE_LINK, KEY_ANY_LINK, KEY_NORESP_LINK}, KEY_ID + "=?",
                 new String[] { _id }, null, null, null, null);
 
         if (cursor.moveToFirst())
@@ -162,12 +165,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         	Response response = new Response();
             response.setId(				cursor.getString(0));
             response.setText(			cursor.getString(1));
-            response.setYesLink(		cursor.getString(2));
-            response.setNoLink(			cursor.getString(3));
-            response.setMaybeLink(		cursor.getString(4));
-            response.setAnyLink(		cursor.getString(5));
-            response.setNoResponseLink(	cursor.getString(6));
-            // return contact
+            response.setTime(			cursor.getString(2));
+            response.setYesLink(		cursor.getString(3));
+            response.setNoLink(			cursor.getString(4));
+            response.setMaybeLink(		cursor.getString(5));
+            response.setAnyLink(		cursor.getString(6));
+            response.setNoResponseLink(	cursor.getString(7));
+            // return response
             cursor.close();
             db.close();
             return response;
@@ -226,16 +230,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
             	Response response = new Response();
-                response.setId(				cursor.getString(0));
-                response.setText(			cursor.getString(1));
-                response.setYesLink(		cursor.getString(2));
-                response.setNoLink(			cursor.getString(3));
-                response.setMaybeLink(		cursor.getString(4));
-                response.setAnyLink(		cursor.getString(5));
-                response.setNoResponseLink(	cursor.getString(6));
-                
-                
-                // Adding contact to list
+            	 response.setId(				cursor.getString(0));
+                 response.setText(				cursor.getString(1));
+                 response.setTime(				cursor.getString(2));
+                 response.setYesLink(			cursor.getString(3));
+                 response.setNoLink(			cursor.getString(4));
+                 response.setMaybeLink(			cursor.getString(5));
+                 response.setAnyLink(			cursor.getString(6));
+                 response.setNoResponseLink(	cursor.getString(7));
+                 // adding response to list
                 responseList.add(response);
             } while (cursor.moveToNext());
         }
@@ -297,7 +300,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     			+ KEY_NAME  +			" TEXT,"
                 + KEY_LASTANSWER + 		" TEXT,"
                 + KEY_STORYLOCATION + 	" TEXT,"
-                + KEY_OLDSTORYLOCATION + 	" TEXT,"
+                + KEY_OLDSTORYLOCATION + " TEXT,"
     			+ KEY_STATE + 	" TEXT"
     			+ ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
@@ -313,7 +316,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	String CREATE_RESPONSE_TABLE = "CREATE TABLE " + TABLE_RESPONSES + "("
     			+ KEY_ID + 				" TEXT,"
     			+ KEY_TEXT  +			" TEXT,"
-                + KEY_YES_LINK + 		" TEXT,"
+                + KEY_TIME  +			" TEXT,"
+    			+ KEY_YES_LINK + 		" TEXT,"
     			+ KEY_NO_LINK + 		" TEXT,"
     			+ KEY_MAYBE_LINK + 		" TEXT,"
     			+ KEY_ANY_LINK + 		" TEXT,"

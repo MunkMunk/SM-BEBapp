@@ -1,5 +1,7 @@
 package com.example.sm_bebapp;
 
+import java.util.Calendar;
+
 import android.util.Log;
 
 
@@ -29,6 +31,16 @@ public class TextParser {
 		
 		if(currentResponse != null)
 		{
+			
+			Calendar time = Calendar.getInstance();
+			String currentTimeString = time.get(Calendar.HOUR) +""+ time.get(Calendar.MINUTE);
+			if (Integer.parseInt(currentTimeString) > 100)
+			{
+				Log.d(">> TIME"  , "GREATER");
+			}
+			Log.d(">> TIME"  , currentTimeString);
+			
+			
 			switch (ParseYesNo( _message)) 
 			{				
 				case 0:  
