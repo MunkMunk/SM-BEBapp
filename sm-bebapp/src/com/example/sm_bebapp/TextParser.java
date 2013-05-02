@@ -9,9 +9,9 @@ import android.util.Log;
 public class TextParser {
 	
 	
-	String yesList 		= "(yes|yeah|y|yup|yep|yuppers|true|correct|sure)"; 
-	String noList 		= "(no|nope|n|nah|noo|negative|false|wrong)"; 
-	String maybeList 	= "(maybe|sometimes|not sure|can't tell|possibly|I don't know|kinda|kind of|kindof|sorta|sortof|sort of)"; 
+	String yesList 		= "(yes|yeah|y|yup|yep|yuppers|true|correct|sure|I suppose|Definitely|positive|agreed|right on|righton|groovy|si|sí|oui)"; 
+	String noList 		= "(no|nope|n|nah|noo|negative|false|wrong|sorry|no|siento|pas|désolé)"; 
+	String maybeList 	= "(maybe|sometimes|not sure|can't tell|possibly|don't know|kinda|kind of|kindof|sorta|sortof|sort of|no idea)"; 
 	
 	private static final String PLAYERSTATE_ACTIVE 		= "active";
 	private static final String PLAYERSTATE_PAUSED 		= "paused";
@@ -31,36 +31,33 @@ public class TextParser {
 		
 		if(currentResponse != null)
 		{
-			
-			Calendar time = Calendar.getInstance();
-			String currentTimeString = time.get(Calendar.HOUR) +""+ time.get(Calendar.MINUTE);
-			if (Integer.parseInt(currentTimeString) > 100)
+			if (CheckTime(currentResponse))
 			{
-				Log.d(">> TIME"  , "GREATER");
+				switch (ParseYesNo( _message))
+				{				
+					case 0:  
+						return updateAnswer( _player, _message, currentResponse, currentResponse.getNoResponseLink() , "No Response");
+					case 1:  
+						return updateAnswer( _player, _message, currentResponse, currentResponse.getYesLink() , "Yes");
+					case 2:  
+						return updateAnswer( _player, _message, currentResponse, currentResponse.getNoLink() , "No");
+					case 3:  
+						return updateAnswer( _player, _message, currentResponse, currentResponse.getMaybeLink() , "Maybe");
+					case 4:  
+						return updateAnswer( _player, _message, currentResponse, currentResponse.getAnyLink() , "Any");
+					default: 
+						 Log.d(">> ERROR!"  , " Could not parse Yes/No on message. Dump> Message: " + _message + " Player " + _player.toShortString());
+						return "BEB> Error! could not parse Yes No. If you are seing this error something really bad happened I don't know what."; 
+				}
 			}
-			Log.d(">> TIME"  , currentTimeString);
-			
-			
-			switch (ParseYesNo( _message)) 
-			{				
-				case 0:  
-					return updateAnswer( _player, _message, currentResponse, currentResponse.getNoResponseLink() , "No Response");
-				case 1:  
-					return updateAnswer( _player, _message, currentResponse, currentResponse.getYesLink() , "Yes");
-				case 2:  
-					return updateAnswer( _player, _message, currentResponse, currentResponse.getNoLink() , "No");
-				case 3:  
-					return updateAnswer( _player, _message, currentResponse, currentResponse.getMaybeLink() , "Maybe");
-				case 4:  
-					return updateAnswer( _player, _message, currentResponse, currentResponse.getAnyLink() , "Any");
-				default: 
-					 Log.d(">> ERROR!"  , " Could not parse Yes/No on message. Dump> Message: " + _message + " Player " + _player.toShortString());
-					return "BEB> Error! could not parse Yes No. If you are seing this error something really bad happened I don't know what."; 
+			else 
+			{
+				return "";// time out of range
 			}
 		}
 		else
 		{
-			_player.setStoryLocation("0");
+			_player.setStoryLocation("-1");
 			db.updatePlayer(_player);
 			Log.d(">> ERROR!"  , " Player does not have a response Id. Dump> Message: " + _message + " Player " + _player.toShortString());
 			return "BEB> Error! You are no longer on the dialog tree. Resetting location to the start";
@@ -69,10 +66,44 @@ public class TextParser {
 		
 	}
 	
+	public boolean CheckTime(Response _response)
+	{
+		Calendar time = Calendar.getInstance();
+		int currentHour = 100*Integer.parseInt(time.get(Calendar.HOUR_OF_DAY)+"");
+		int currentMin	= Integer.parseInt(time.get(Calendar.MINUTE)+"");
+		int currentTime = currentHour+currentMin;
+		
+		Log.d(">> TIME R"  , _response.getTime());
+		String[] responseTimeArgs = _response.getTime().split(" "); //"a|700" -> [a][700] or b|900 -> [b][900]
+		
+		if(!_response.getTime().equals("0"))
+		{
+			Log.d(">> TIME "  , "ct:"+currentTime + " rt:"+responseTimeArgs[0] +"-"+ responseTimeArgs[1] +"-");
+			
+			if ( responseTimeArgs[0].equals("a") && currentTime > Integer.parseInt(responseTimeArgs[1])) //current time is after response time
+			{
+				return true;
+			}
+			else if (responseTimeArgs[0].equals("b") && currentTime < Integer.parseInt(responseTimeArgs[1])) //current time is before response time
+			{
+				return true;
+			}
+			else 
+			{
+				return false;
+			}
+		}
+		else 
+		{
+			return true; //response does not have a time restriction. 
+		}
+		
+	}
+	
 	//Parses the message for yes or nos or maybes
 	public int ParseYesNo(String _message)
 	{
-		if (_message.equals("|none|"))
+		if (_message.equals(":;:none:;:"))
 		{
 			return 0; //"none"; 
 		}
@@ -97,7 +128,7 @@ public class TextParser {
 	//searches for a word or a list of words in the message. returns true or false if a word is found. Lists are formatted as (foobar|foobaz|...)
 	public boolean ParseWord(String _word, String _message)
 	{
-		if (_message.matches("(?i).*\\b"+_word+"\\b.*"))
+		if (FormatMessage(_message).matches("(?i).*\\b"+_word+"\\b.*"))	
 		{
 			return true;
 		}
@@ -107,28 +138,7 @@ public class TextParser {
 	public String updateAnswer(Player _player, String _message, Response _currentResponse,  String _responseLink, String _responseType)
 	{
 	    //---------- Checks to see if special player data need to be stored based on the response id. SO UGLY!! 
-//		if(_currentResponse.getId().equals("0"))//Store the players name. 
-//		{
-//			_player.setName(BuildName(_message)); 
-//		}
-		if(_currentResponse.getId().equals("END"))//If the game is over pause the player. 
-		{
-			_player.setState(PLAYERSTATE_PAUSED); 
-			Log.d(">> PLAYER ENDED", _player.getPhoneNumber() + " ended the game. Seting to paused.");
-			
-		}
-		else if(_currentResponse.getId().equals("1a") || _currentResponse.getId().equals("p0") )//stor the name for the name question. Hacky! I know. 
-		{
-			if(_message.equals("|none|"))
-			{
-				_player.setName(BuildName("X"));
-			}
-			else 
-			{
-				_player.setName(BuildName(_message)); 
-			}
-		}
-		
+		StoreData(_player, _currentResponse, _message);
 		
 		if(_responseLink.equals("none"))
 	    {
@@ -153,6 +163,39 @@ public class TextParser {
 		
 	}
 	
+	public void StoreData(Player _player, Response _currentResponse, String _message)
+	{
+		if(_currentResponse.getId().equals("END"))//If the game is over pause the player. 
+		{
+			_player.setState(PLAYERSTATE_PAUSED); 
+			Log.d(">> PLAYER ENDED", _player.getPhoneNumber() + " ended the game. Seting to paused.");
+			
+		}
+		else if(_currentResponse.getId().equals("1a") || _currentResponse.getId().equals("1nr") || _currentResponse.getId().equals("1m")|| _currentResponse.getId().equals("1n")|| _currentResponse.getId().equals("p0") )//stor the name for the name question. Hacky! I know. 
+		{
+			if(_message.equals(":;:none:;:"))
+			{
+				_player.setName(BuildName("X"));
+			}
+			else 
+			{
+				_player.setName(BuildName(_message)); 
+			}
+		}
+		else if(_currentResponse.getId().equals("0"))
+		{
+			_player.setYear(BuildName(_message));
+		}
+		else if(_currentResponse.getId().equals("5.75a")||_currentResponse.getId().equals("5.75nr"))
+		{
+			_player.setWords1(_message);
+		}
+		else if(_currentResponse.getId().equals("10.5a"))
+		{
+			_player.setWords2(_message);
+		}
+		db.updatePlayer(_player);
+	}
 	
 	//Parses the out response for the key words between ; ; and replaces them appropreatly. 
 	public String BuildResponse(Player _player, String _message, Response _outResponse)
@@ -167,9 +210,20 @@ public class TextParser {
 			}
 			else if(r.equals("lastanswer"))
 			{
-				r = _message.toLowerCase(); //To lower case makes it less obvious that its the same exact thing the player typed. 
+				r = FormatMessage(_message).toLowerCase(); //To lower case makes it less obvious that its the same exact thing the player typed. 
 			}
-			
+			else if(r.equals("year"))
+			{
+				r= _player.getYear();
+			}
+			else if(r.equals("words1"))
+			{
+				r= _player.getWords1();
+			}
+			else if(r.equals("words2"))
+			{
+				r= _player.getWords2();
+			}
 			response += r;
 		}
 		return response; 
@@ -198,7 +252,7 @@ public class TextParser {
 			}
 			
 		}
-		Log.d(">> BUILD NAME"  , "Built new name" +_message+ " -> "+name);
+		Log.d(">> BUILD NAME"  , "Built new name " +_message+ " -> "+name);
 		return name.trim();
 	}
 	
@@ -232,7 +286,23 @@ public class TextParser {
 		
 	
 	}
-
 	
+	//removes :;: from mesage strings and replaces them with spaces. 
+	public String FormatMessage(String _message)
+	{
+		String[] _messageArgs = _message.split(":;:");
+		
+		String message = "";
+		for (String m : _messageArgs) {
+			message += m +" "; 
+		}
+		
+		return message; 
+	}
+	
+//	public String[] BuildDataArray(String _data)
+//	{
+//		return _data.split(":;:");
+//	}
 
 }

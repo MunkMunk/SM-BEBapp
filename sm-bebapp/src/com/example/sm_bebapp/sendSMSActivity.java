@@ -22,10 +22,13 @@ public class SendSMSActivity extends Activity {
         phoneNumber = getIntent().getExtras().getString("phoneNumber");
         message = getIntent().getExtras().getString("message");
         
+        
         splitMessage(phoneNumber,message);
         
         finish();
     }
+    
+    
     
     private void splitMessage(String _phoneNumber, String _message)
     {
@@ -43,12 +46,21 @@ public class SendSMSActivity extends Activity {
     		String newMessage = ""; 
     		for (String w : words)
         	{
-    			if (newMessage.length() + w.length() > 155)
+    			if (w.equals("<br>"))
     			{
     				sendSMS(_phoneNumber, newMessage);
     				newMessage = ""; 
     			}
-    			newMessage += w + " "; 
+    			else if (newMessage.length() + w.length() > 155)
+    			{
+    				sendSMS(_phoneNumber, newMessage);
+    				newMessage = w + " "; 
+    			}
+    			else
+    			{
+    				newMessage += w + " "; 
+    			}
+    			
         	}
     		if(_message.length() > 0)
     		{

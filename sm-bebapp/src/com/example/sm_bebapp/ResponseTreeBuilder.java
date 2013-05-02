@@ -35,46 +35,88 @@ public class ResponseTreeBuilder {
     
 	public void PopulateBEBResponses()
     {
-		AddResponse( "-1","0", "none", "none", "none", "0", "0",		"BEB> Game started");
-    	AddResponse( "0","0", "none", "none", "none", "1a", "1a",		"What year is it?");
+		AddResponse( "-1","a 2100", "none", "none", "none", "0", "0",		"BEB> Game started");
+		//AddResponse( "-1","0", "none", "none", "none", "END", "END",		"BEB> Game started");
+		
+		AddResponse( "0","a 2100", "none", "1n", "1m", "1a", "1nr",		"What year is it?");
     	
-    	AddResponse( "1a","0", "none", "none", "none", "2a", "2nr",		"Perfect, my calulations are spot on. I am in great need of your help! What is your name?");
+    	AddResponse( "1a",	"0", "none", "none", "none", "2a", "2nr",		"Perfect, my calulations are spot on. I am in great need of your help! What is your name?");
+    	AddResponse( "1n",	"0", "none", "none", "none", "2a", "2nr",		"Don't be funny! I am in great need of your help! What is your name?");
+    	AddResponse( "1m",	"0", "none", "none", "none", "2a", "2nr",		"Well I'm sure my calulations are spot on. I am in great need of your help! What is your name?");
+    	AddResponse( "1nr",	"0", "none", "none", "none", "2a", "2nr",	 	"I am in great need of your help! What is your name?");
     	
-    	AddResponse( "2a","0", "3y", "3n", "3n", "3n", "3n",			"Nice to meet you ;name;. You can call me Y. Time is limited so I can't explain everything, but in short, I am a member of BEB. We're trying to get a picture of a time before the world started fermenting. ([name]'s Year) is a critical year in the past and I need you to help me! Can I trust you? ");
-    	AddResponse( "2nr","0", "3y", "3n", "3n", "3n", "3n",			"OK, I understand you need to protect your privacy, I will call you X and you can call me Y, Time is limited so I can't explain everything, but in short, I am a member of BEB. We're trying to get a picture of a time before the world started fermenting. (X's Year) is a critical year in the past and I need you to help me! Can I trust you?");
+    	AddResponse( "2a", "0", "none", "none", "none", "2.5a", "2.5a",				"Nice to meet you ;name;. You can call me Y. ");	
+    	AddResponse( "2nr","a 1500", "none", "none", "none", "2.5a", "2.5a",		"OK, I understand you need to protect your privacy, I will call you X and you can call me Y.");
   	
+    	AddResponse( "2.5a", "0", "2.75a", "2.75a", "2.75a", "2.75a", "2.75a", 		"Time is limited so I can't explain everything, but in short, I am a member of BEB. <br> We're trying to get a picture of a time before the world started fermenting.");
+    		
     	
-    	AddResponse( "3y","0", "none", "none", "none", "4a", "4a",		"Good to hear. Quantum tunnelers do not miss. I have faith in your abilities, ;name;. We all have a part to play no matter what time period we are from. ");
-    	AddResponse( "3n","0", "none", "none", "none", "4a", "4a",		"Not to worry. I was like you once, but quantum tunnelers do not miss. I have faith in your abilities, ;name;. We all have an important part to play no matter what time period we are from.");
+    	AddResponse( "2.75a", "0", "3y", "3n", "3n", "3n", "3n", 		";year; is a critical year in the past and I need you to help me! Can I trust you? ");
     	
-    	AddResponse( "4a","0", "none", "none", "none", "5a", "5a",		"Ok if you are to help me, First I will need to grow your brain. Yeast cells cluster when they grow during the making of beer, so you need to get social. I'm not asking much, just that you ask two people what it is they value most? Try to do this casually without raising too much suspicion. I will follow up later.");
+    	AddResponse( "3y","0", "none", "none", "none", "4a", "4a",		"Good to hear. Quantum tunnelers do not miss. I have faith in your abilities, ;name;. <br> We all have a part to play no matter what time period we are from.");
+    	AddResponse( "3n","0", "none", "none", "none", "4a", "4a",		"Not to worry. I was like you once, but quantum tunnelers do not miss.  I have faith in your abilities, ;name;. <br> We all have an important part to play no matter what time period we are from.");
     	
-    	AddResponse( "5a","0", "none", "none", "none", "6a", "6a",		";name;, how did it go?  I hope you learned something about values in your era. We're trying to use this information to assemble a fermentation molecular sequence we can use to keep beer-drinking a viable option in our future. Can you please send me one or two words that represent the values of the people you spoke to?");
+    	AddResponse( "4a","0", "4.5y", "4.5n", "5.5m", "4.5a", "4.5a",	"Ok if you are to help me, First I will need to grow your brain. <br> Yeast cells cluster when they grow during the making of beer, so you need to get social. <br> I'm not asking much, just that you ask two people what it is they value most? I will follow up later.");
     	
-    	AddResponse( "6a","0", "none", "none", "none", "7a", "7a",		";name;, you are a great help. Now I feel I can tell you about the Biomes, they are a group of beings whose purpose it is to make things split for expansion. They aren't exactly good or bad, but they do sometimes make things dissolve... not good for those of us who are trying to cluster! ");
+    	AddResponse( "4.5y","0", "none", "none", "none", "5a", "5a",     "Thanks! Try to do this casually without raising suspicion.");
+    	AddResponse( "4.5n","0", "none", "none", "none", "5a", "5a",     "You are raising too much suspicion. Just do it casually");
+    	AddResponse( "4.5m","0", "none", "none", "none", "5a", "5a",     "The fate of the future depends on you. Just do it casually");
+    	AddResponse( "4.5a","0", "none", "none", "none", "5a", "5a",     "Try to do this casually without raising suspicion.");
     	
-    	AddResponse( "7a","0", "none", "none", "none", "8a", "8a",		"Biomes are everywhere and look like normal people.  I need you to help me find them.  Tonight while you are out, someone is going to say something very strange.  Listen carefully for someone to say something about waste and consumption.");
     	
-    	AddResponse( "8a","0", "none", "none", "none", "9a", "9a",		";name;, it's Y, things are not going well, the biomes seem to be working to keep us apart. The future seems to be fermenting, drowning in its own consumption. ");
+    	AddResponse( "5a","0", "5.5y", "5.5n", "5.5m", "5.5a", "5.5nr",		";name;, did it go well?  I hope you learned something about values in your era.");
     	
-    	AddResponse( "9a","0", "none", "none", "none", "10a", "10a",	"With one center of attention, things can group. But there seems to be so many locuses of focuses. Are the Biomes winning?");
-    	
-    	AddResponse( "10a","0", "none", "none", "none", "11a", "11a",	"God, ;name;, it's crazy over here, the biomes are everywhere.  What have you heard?  I need you to send me the exact words right away.");
-    	
-    	AddResponse( "11a","0", "none", "none", "none", "12a", "12a",	"Oh ;name;, I thought I would never hear from you! You don't know how importantyour last text has been to our task.");
+    	AddResponse( "5.5y","0", "none", "none", "none", "5.75a", "5.75nr",		"Excellent! This information is very important. <br> We're trying to use this information to assemble a fermentation molecular sequence we can use to keep beer-drinking a viable option in our future. ");
+    	AddResponse( "5.5n","0", "none", "none", "none", "5.75a", "5.75nr",		"Keep trying. This information is very important. <br> We're trying to use this information to assemble a fermentation molecular sequence we can use to keep beer-drinking a viable option in our future. ");
+    	AddResponse( "5.5m","0", "none", "none", "none", "5.75a", "5.75nr",		"I hope this works. Keep trying. This information is very important. <br> We're trying to use this information to assemble a fermentation molecular sequence we can use to keep beer-drinking a viable option in our future. ");
+    	AddResponse( "5.5a","0", "none", "none", "none", "5.75a", "5.75nr",		"We're trying to use this information to assemble a fermentation molecular sequence we can use to keep beer-drinking a viable option in our future. ");
+    	AddResponse( "5.5nr","0", "none", "none", "none", "5.75a", "5.75nr",	"Are you there? This information is very important. <br> We're trying to use this information to assemble a fermentation molecular sequence we can use to keep beer-drinking a viable option in our future. ");
+    			    	
+    	AddResponse( "5.75a","0", "none", "none", "none", "6a", "6nr",		"Please send me one or two words that represent the values of the people you spoke to.");
+    	AddResponse( "5.75nr","0", "none", "none", "none", "6a", "6nr",		"If you talk to anyone please send me one or two words that represent the values of the people you spoke to.");
 
-    	AddResponse( "12a","0", "none", "none", "none", "13a", "13a",	"Meet our comrades at Jimmy's No.43 to collect a reward");
+    	AddResponse( "6a","0", "none", "none", "none", "7a", "7a",		";name;, you are a great help. Now I feel I can tell you about the Biomes, they are a group of beings whose purpose it is to make things split for expansion. <br> Biomes aren't exactly good or bad, but they do sometimes make things dissolve... not good for those of us who are trying to cluster! ");
+    	AddResponse( "6nr","0", "none", "none", "none", "7a", "7a",		";name;, There's more work to do. Let me tell you about the Biomes, they are a group of beings whose purpose it is to make things split for expansion. <br> Biomes aren't exactly good or bad, but they do sometimes make things dissolve... not good for those of us who are trying to cluster! ");
+        
+    	AddResponse( "7a","0", "none", "none", "none", "8a", "8a",		"Biomes are everywhere and look like normal people.  I need you to help me find them. <br> Tonight while you are out, someone is going to say something very strange. Listen carefully for someone to say something about waste and consumption.");
     	
-    	AddResponse( "13a","0", "none", "none", "none", "14a", "14a",	";name;, it's Y, I haven't heard from you in a while, what happened to you lastnight?  The Biomes did more damage than I thought. Pls txt me and let me know u are alright.");
+    	AddResponse( "8a","0", "9y", "9n", "9m", "9a", "9a",		";name;,it's Y, things are not going well. The biomes seem to be keeping us apart. The future is fermenting, drowning in its own consumption. Can you hear it?");
     	
-    	AddResponse( "14a","0", "none", "none", "none", "15a", "15a",	";name;,  Your body can suffer but your spirit can be free.  I think we both need another beer.  It's the yeast we could do.");
+    	AddResponse( "9y","0", "10y", "10n", "10m", "10a", "10nr",	"Good! Keep listening! <br> With one center of attention, things can group. But there seems to be so many locuses of focuses. Are the Biomes winning?");
+    	AddResponse( "9n","0", "10y", "10n", "10m", "10a", "10nr",	"Keep listening!  <br> You must understand, with one center of attention, things can group. But there seems to be so many locuses of focuses. Are the Biomes winning?");
+    	AddResponse( "9m","0", "10y", "10n", "10m", "10a", "10nr",	"Its hard to tell, but you will understand.  <br> With one center of attention, things can group. But there seems to be so many locuses of focuses. Are the Biomes winning?");
+    	AddResponse( "9a","0", "10y", "10n", "10m", "10a", "10nr",	"With one center of attention, things can group. But there seems to be so many locuses of focuses. Are the Biomes winning?");
+    	AddResponse( "9nr","0", "10y", "10n", "10m", "10a", "10nr",	"With one center of attention, things can group. I hope you are not lost in the sea of focuses. Are the Biomes winning?");
+    	
+    	AddResponse( "10y","0", "none", "none", "none", "10.5a", "10.5a",	"Oh God! ;name;, it's crazy over here, the biomes are everywhere. We must act soon!");
+    	AddResponse( "10n","0", "none", "none", "none", "10.5a", "10.5a",	"Maybe not yet, but God, ;name;! it's crazy over here, the biomes are everywhere. We must act soon!");
+    	AddResponse( "10m","0", "none", "none", "none", "10.5a", "10.5a",	"True Boimes are very clever. God, ;name;, it's crazy over here, the biomes are everywhere!");
+    	AddResponse( "10a","0", "none", "none", "none", "10.5a", "10.5a",	"God, ;name;, it's crazy over here, the biomes are everywhere. We must act soon!");
+    	AddResponse( "10nr","0", "none", "none", "none", "10.5a", "10.5a",	"God, ;name;, it's crazy over here, the biomes are everywhere. We must act soon!");
+    		
+    	AddResponse("10.5a", "0", "none", "none", "none", "11a", "11nr", 	"What have you heard about waste and consumption?  I need you to send me the exact words right away.");
+    			
+    	AddResponse( "11a","0", "none", "none", "none", "12a", "12a",		"Oh ;name;, I thought I would never hear from you! You don't know how important your last text has been to our task.");
+    	AddResponse( "11nr","0", "none", "none", "none", "12nr", "12nr",	"Oh ;name;, I'm so worried! You don't know how important you are to our task.  We'll make it through tonight and hope for a reply from you tomorrow");
+    	
+    	AddResponse( "12a","0", "none", "none", "none", "12br", "12br",		"Meet our comrades at Jimmy's No.43 to collect a reward. 43 E 7th St, New York, NY");
+    	AddResponse( "12nr","0", "none", "none", "none", "12br", "12br",	"");
+    	
+    	AddResponse( "12br","b 100", "none", "none", "none", "13a", "13a",		"");
+    	
+    	AddResponse( "13a","0", "none", "none", "none", "14a", "14nr",	";name;, it's Y, I haven't heard from you in a while, what happened?  The Biomes did more damage than I thought. <br> Pls txt me and let me know u are alright.");
+    	
+    	AddResponse( "14a","0", "none", "none", "none", "15a", "15a",	"Good to hear from you ;name;. Your body can suffer but your spirit can be free.  I think we both need another beer.  It's the yeast we could do.");	
+    	AddResponse( "14nr","0", "none", "none", "none", "15a", "15a",	"I don't know if you are listening ;name;, but your body can suffer but your spirit can be free.  I think we both need another beer.  It's the yeast we could do.");
     	
     	AddResponse( "15a","0", "none", "none", "none", "16a", "16a",	"Stop, feel the direction of the wind. Stand for at least a minute and feel the direction change. Sooner or later, the tanks will appear. - Y");
     	
-    	AddResponse( "16a","0", "none", "none", "none", "17a", "17a",	";name; ru here?  I need to tell u who I relly am, I'm not Y, Im \r\n <ERROR> [Code:114] Data_Corrupted </error>");
+    	AddResponse( "16a","0", "none", "none", "none", "17a", "17a",	";name; ru here?  I need to tell u who I relly am, I'm not Y, Im -       ...");
+    	// Day 2
+    	AddResponse( "day2","0", "none", "none", "none", "17a", "17a",	"");
     	
-    	AddResponse( "17a","0", "18y", "18a", "18a", "18a", "18a",		"Hello is this the number of ;name;?");
-    	//Day 2
+    	AddResponse( "17a","a 2100", "18y", "18a", "18a", "18a", "18a",		"Hello is this the number of ;name;?");
+   
     	AddResponse( "18y","0", "19y", "19a", "19a", "19a", "19a",		"My name is Seed. I found your texts on a phone we confiscated from someone who called themselves Y who is now dead. Poisoned in waste. We need to assess your involvement. Did you know Y's real identity?");
     	AddResponse( "18a","0", "19y", "19a", "19a", "19a", "19a",		"My name is Seed. I found your number on a phone we confiscated from someone who called themselves Y who is now dead. Poisoned in waste. We need to assess your involvement. Did you know Y's real identity?");
     	
@@ -84,9 +126,9 @@ public class ResponseTreeBuilder {
     	AddResponse( "20a","0", "none", "none", "none", "21a", "21a",	";name;, It's Seed from Biome. We don't believe that you were involved inanything directly.");
     	AddResponse( "20nr","0", "none", "none", "none", "21a", "21a",	";name;, It's Seed from Biome. We don't believe that you were involved in anything directly, so there's no reason to be non-cooperative.");
     	
-    	AddResponse( "21a","0", "none", "none", "none", "22a", "22a",	"(We know that you are motivated by drinking local, activating your imagination andbeing social.)  You need to wake up to reality, [name], we're not what Y said we are. We actually help people like you break out of the prison of their minds.");
+    	AddResponse( "21a","0", "none", "none", "none", "22a", "22a",	"(We know that you are motivated by drinking local, activating your imagination andbeing social.)  You need to wake up to reality, ;name;, we're not what Y said we are. We actually help people like you break out of the prison of their minds.");
     	
-    	AddResponse( "22a","0", "none", "none", "none", "23a", "23a",		"Remembrance restores possibility to the past, making whathappened incomplete and completing what never was. Tonight I need you toteach someone a song from your childhood, sing it together, and ask thatperson to do the same for you. Both of you call us and sing us the songs together on our voicemeil and we will distribute the information. Then, meet us at Jimmy's for a toast to the future.");
+    	AddResponse( "22a","0", "none", "none", "none", "23a", "23a",		"Remembrance restores possibility to the past, making whathappened incomplete and completing what never was. Tonight I need you toteach someone a song from your childhood, sing it together, and ask thatperson to do the same for you. Both of you call us and sing us the songs together on our voicemeil and we will distribute the information. Then, meet us at Jimmy's for a toast to the future. 43 E 7th St, New York, NY");
     	
     	AddResponse( "23a","0", "END", "END", "END", "END", "END",			"BEB> end of first draft. text Restart to restart");
 		

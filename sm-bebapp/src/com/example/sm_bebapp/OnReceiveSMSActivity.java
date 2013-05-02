@@ -90,6 +90,11 @@ public class OnReceiveSMSActivity extends Activity {
     		AdminCMD_ShowPLayer(_phoneNumber,args); 
     		return true; 
         }
+    	else if(CheckCommand("move player", args[0]))
+        {//--Show a PLayer 
+    		AdminCMD_MovePLayer(_phoneNumber,args); 
+    		return true; 
+        }
     	else if(CheckCommand("build response table", args[0]))
         {//--Build All Responses 
     		AdminCMD_BuildResponseTable(_phoneNumber,args); 
@@ -213,6 +218,53 @@ public class OnReceiveSMSActivity extends Activity {
     	    }
 		}
     }
+    public void AdminCMD_MovePLayer(String _phoneNumber,  String[] args)
+    {
+    	String playerNumber =""; 
+		Boolean MovePlayer = false; 
+		
+		if(args.length >= 3)
+		{
+			if(textParser.ParseWord("me", args[1])) //if "me" is used for player number it will use your number
+			{
+				playerNumber = textParser.FormatPhoneNumber(_phoneNumber); 
+				MovePlayer = true; 
+			}
+			else 
+			{
+				playerNumber = textParser.FormatPhoneNumber(args[1]);
+				MovePlayer = true; 
+			}
+		}
+		else 
+		{
+			SendOutSMS(_phoneNumber, "BEB> ERROR \r\n You must specify a phone number for player and id of response you want to move to.");
+			MovePlayer = false;
+		}
+		
+		if(MovePlayer)
+		{
+    		Player player = null;
+    	    Response response = null;
+    		player = db.getPlayer(playerNumber); //find the player
+    		response = db.getResponse(args[2].trim());
+    	    if(player == null) //If the player does not exist
+    	    {
+    	    	SendOutSMS(_phoneNumber, "BEB> Player ["+playerNumber+"] not in the player list.");
+    	    }
+    	    else if (response == null)
+    	    {
+    	    	SendOutSMS(_phoneNumber, "BEB> Response ["+args[2]+"] not in the response table");
+    	    }
+    	    else  // otherwise print the player. 
+    	    {
+    	        player.setStoryLocation(args[2]);
+    	        db.updatePlayer(player);
+    	    	SendOutSMS(_phoneNumber, "BEB> Player ["+playerNumber+"] moved to  ["+args[2]+"]");
+    	        
+    	    }
+		}
+    }
     public void AdminCMD_BuildResponseTable(String _phoneNumber,  String[] args)
     {
     	db.ClearResponseTable();
@@ -220,7 +272,9 @@ public class OnReceiveSMSActivity extends Activity {
 		{
 	    	if(rtBuilder.PopulateResponses(args[1]))
 			{
-				SendOutSMS(_phoneNumber, "BEB> Response table Built"); 
+	    		
+	    		printAllResponses();
+	    		SendOutSMS(_phoneNumber, "BEB> Response table Built"); 
 			}
 			else 
 			{
@@ -249,13 +303,16 @@ public class OnReceiveSMSActivity extends Activity {
     //------ Adds a new player to the database
     public void AddNewPlayer(String _phoneNumber, String _message)
     {
-    	SendOutSMS(_phoneNumber, "Welcome to BEB");
+    	SendOutSMS(_phoneNumber, 	"Welcome to BEB");
     	Player player = new Player();
-        player.setName(				 "|none|");
-        player.setPhoneNumber(	_phoneNumber);
-        player.setLastAnswer(		"|none|");
-        player.setStoryLocation(		"-1");
-        player.setOldStoryLocation(		"-1");
+        player.setName(				 	":;:none:;:");
+        player.setPhoneNumber(			_phoneNumber);
+        player.setLastAnswer(			":;:none:;:");
+        player.setStoryLocation(				"-1");
+        player.setOldStoryLocation(				"-1");
+        player.setYear(						"");
+        player.setWords1(					"");
+        player.setWords2(					"");
         player.setState(		   "active");
         Log.d(">> NEW PLAYER ", _phoneNumber); 
         db.addPlayer(player); 
@@ -355,13 +412,13 @@ public class OnReceiveSMSActivity extends Activity {
     {
     	if(_player.getState().equals(PLAYERSTATE_ACTIVE))
     	{
-    		if(_player.getLastAnswer().equals("|none|"))//If player hasn't answered yes set last answer to message. 
+    		if(_player.getLastAnswer().equals(":;:none:;:"))//If player hasn't answered yes set last answer to message. 
     		{
     			_player.setLastAnswer(_message); 
     		}
-    		else //Otherwise add the message to the last message. "|" separate messages so they can be parsed separatly. 
+    		else //Otherwise add the message to the last message. ":;:" separate messages so they can be parsed separatly. 
     		{
-    			_player.setLastAnswer(_player.getLastAnswer() + "|" + _message); 
+    			_player.setLastAnswer(_player.getLastAnswer() + ":;:" + _message); 
     		}
     		db.updatePlayer(_player); 
     		Log.d(">> PLAYER UPDATE"  , _player.getPhoneNumber() + " : \"" + _player.getLastAnswer() +"\"");

@@ -9,7 +9,9 @@ public class Player {
     String story_location; 
     String old_story_location; 
     String state; //Are they playing, afk, or paused. 
- 
+    String year; //  :;:year:;:other responses
+    String words1; 
+    String words2;
     // Empty constructor
     public Player(){
  
@@ -74,9 +76,35 @@ public class Player {
         this.state = _state;
     }
     
+    //getting year
+    public String getYear(){
+        return this.year;
+    }
+    // setting last state
+    public void setYear(String _year){
+        this.year = _year;
+    }
+    
+    //getting words1
+    public String getWords1(){
+        return this.words1;
+    }
+    // setting words1
+    public void setWords1(String _words1){
+        this.words1 = _words1;
+    }
+    //getting words2
+    public String getWords2(){
+        return this.words2;
+    }
+    // setting words2
+    public void setWords2(String _words2){
+        this.words2 = _words2;
+    }
+    
     public String toShortString()
     {
-    	return getName() + " " + getPhoneNumber() + " [" + getStoryLocation() +"][" + getOldStoryLocation() +"] <"+ getState()+">\r\n\"" + getLastAnswer() + "\"";
+    	return getName() + " " + getPhoneNumber() + " [" + getStoryLocation() +"][" + getOldStoryLocation() +"] <"+ getState()+">\r\n\"" + getLastAnswer() + "\"  \""+getYear()+"\"  \""+getWords1()+"\"  \""+getWords2()+"\"";
     	
     }
     

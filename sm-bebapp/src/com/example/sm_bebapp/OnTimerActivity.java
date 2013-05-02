@@ -44,10 +44,10 @@ public class OnTimerActivity extends Activity {
         
         for (Player p : players) 
         {
-        	if(p.getState().equals(PLAYERSTATE_ACTIVE))
+        	if(p.getState().equals(PLAYERSTATE_ACTIVE) && p.getPhoneNumber().equals("+15055733247"))
         	{
         		outMessage = textParser.ParseMesssage(p, p.getLastAnswer());
-        		p.setLastAnswer("|none|"); //clear last answer
+        		p.setLastAnswer(":;:none:;:"); //clear last answer
         		db.updatePlayer(p); 
         		SendOutSMS( p.getPhoneNumber(), outMessage);
         	}
@@ -63,7 +63,7 @@ public class OnTimerActivity extends Activity {
     	PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
     	Calendar time = Calendar.getInstance();
     	time.setTimeInMillis(System.currentTimeMillis());
-    	time.add(Calendar.MINUTE, 1);
+    	time.add(Calendar.MINUTE, 10);
     	alarmMgr.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
     	
     	

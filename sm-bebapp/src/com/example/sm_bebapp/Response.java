@@ -96,6 +96,6 @@ public class Response {
     
     public String toShortString()
     {
-    	return "["+id+"] "+yesLink +" : " + noLink +" : "+ maybeLink + " : "+ anyLink + " : " + noResponseLink + " : " + "\"" + text +"\""; 
+    	return "["+id+"] ["+time+"] "+yesLink +" : " + noLink +" : "+ maybeLink + " : "+ anyLink + " : " + noResponseLink + " : " + "\"" + text +"\""; 
     }
 }
