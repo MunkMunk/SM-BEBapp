@@ -2,6 +2,7 @@ package com.example.sm_bebapp;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -16,7 +17,7 @@ public class OnTimerActivity extends Activity {
 	String phoneNumber, message;
 	DatabaseHandler db; 
 	TextParser textParser; 
-	
+	Random generator;
 	private static final String PLAYERSTATE_ACTIVE 		= "active";
 	private static final String PLAYERSTATE_PAUSED 		= "paused";
 	
@@ -26,6 +27,7 @@ public class OnTimerActivity extends Activity {
         
         db = new DatabaseHandler(this);
         textParser = new TextParser(db);
+        generator = new Random();
         
         Log.d(">> TIMER"  , "Time to update players");
         UpdatePlayers();
@@ -44,13 +46,26 @@ public class OnTimerActivity extends Activity {
         
         for (Player p : players) 
         {
-        	if(p.getState().equals(PLAYERSTATE_ACTIVE) && p.getPhoneNumber().equals("+15055733247"))
+        	if(p.getState().equals(PLAYERSTATE_ACTIVE))
         	{
+        		if(p.getStoryLocation().equals("11a") || p.getStoryLocation().equals("22a"))
+        		{
+        			SendOutSMS( "+15055733247", "Player "+p.getPhoneNumber()+" as "+p.getName()+", Getting Jimmy's Address in 15 min");
+        			SendOutSMS( "+17189095607", "Player "+p.getPhoneNumber()+" as "+p.getName()+", Getting Jimmy's Address in 15 min");
+        			SendOutSMS( "+15055776028", "Player "+p.getPhoneNumber()+" as "+p.getName()+", Getting Jimmy's Address in 15 min");
+        			//SendOutSMS( "", "Player "+p.getPhoneNumber()+" Getting Jimmy's Address in 15 min");
+        		}
+        		
         		outMessage = textParser.ParseMesssage(p, p.getLastAnswer());
+        		
         		p.setLastAnswer(":;:none:;:"); //clear last answer
         		db.updatePlayer(p); 
         		SendOutSMS( p.getPhoneNumber(), outMessage);
+        		
+        		
         	}
+        	
+        	
         }
     	
     }
@@ -63,7 +78,13 @@ public class OnTimerActivity extends Activity {
     	PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
     	Calendar time = Calendar.getInstance();
     	time.setTimeInMillis(System.currentTimeMillis());
-    	time.add(Calendar.MINUTE, 10);
+    	
+    	
+    	int randomIndex = generator.nextInt(10);
+    	time.add(Calendar.MINUTE, 13+(randomIndex-5));
+    	
+    	
+    	//time.add(Calendar.SECOND, 45+(randomIndex-5));
     	alarmMgr.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
     	
     	

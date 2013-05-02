@@ -35,18 +35,24 @@ public class ResponseTreeBuilder {
     
 	public void PopulateBEBResponses()
     {
-		AddResponse( "-1","a 2100", "none", "none", "none", "0", "0",		"BEB> Game started");
+		AddResponse( "-1","a 1930", "none", "none", "none", "0", "0",		"BEB> Game started");
 		//AddResponse( "-1","0", "none", "none", "none", "END", "END",		"BEB> Game started");
 		
-		AddResponse( "0","a 2100", "none", "1n", "1m", "1a", "1nr",		"What year is it?");
+		AddResponse( "0","a 1930", "none", "1n", "1m", "1a", "0b1",		"What year is it?");
     	
-    	AddResponse( "1a",	"0", "none", "none", "none", "2a", "2nr",		"Perfect, my calulations are spot on. I am in great need of your help! What is your name?");
-    	AddResponse( "1n",	"0", "none", "none", "none", "2a", "2nr",		"Don't be funny! I am in great need of your help! What is your name?");
-    	AddResponse( "1m",	"0", "none", "none", "none", "2a", "2nr",		"Well I'm sure my calulations are spot on. I am in great need of your help! What is your name?");
-    	AddResponse( "1nr",	"0", "none", "none", "none", "2a", "2nr",	 	"I am in great need of your help! What is your name?");
+		AddResponse( "0b1","a 1930", "none", "1n", "1m", "1a", "0b2",		"");
+		AddResponse( "0b2","a 1930", "none", "1n", "1m", "1a", "1nr",		"");
+		
+    	AddResponse( "1a",	"0", "none", "none", "none", "2a", "1b1",		"Perfect, my calulations are spot on. I am in great need of your help! What is your name?");
+    	AddResponse( "1n",	"0", "none", "none", "none", "2a", "1b1",		"Don't be funny! I am in great need of your help! What is your name?");
+    	AddResponse( "1m",	"0", "none", "none", "none", "2a", "1b1",		"Well I'm sure my calulations are spot on. I am in great need of your help! What is your name?");
+    	AddResponse( "1nr",	"0", "none", "none", "none", "2a", "1b1",	 	"I am in great need of your help! What is your name?");
     	
-    	AddResponse( "2a", "0", "none", "none", "none", "2.5a", "2.5a",				"Nice to meet you ;name;. You can call me Y. ");	
-    	AddResponse( "2nr","a 1500", "none", "none", "none", "2.5a", "2.5a",		"OK, I understand you need to protect your privacy, I will call you X and you can call me Y.");
+    	AddResponse( "1b1",	"0", "none", "none", "none", "2a", "1b2",	 	"");
+    	AddResponse( "1b2",	"0", "none", "none", "none", "2a", "2nr",	 	"");
+    	
+    	AddResponse( "2a", "0", "none", "none", "none", "2.5a", "2.5a",		"Nice to meet you ;name;. You can call me Y. ");	
+    	AddResponse( "2nr","0", "none", "none", "none", "2.5a", "2.5a",		"OK, I understand you need to protect your privacy, I will call you X and you can call me Y.");
   	
     	AddResponse( "2.5a", "0", "2.75a", "2.75a", "2.75a", "2.75a", "2.75a", 		"Time is limited so I can't explain everything, but in short, I am a member of BEB. <br> We're trying to get a picture of a time before the world started fermenting.");
     		
@@ -72,9 +78,13 @@ public class ResponseTreeBuilder {
     	AddResponse( "5.5a","0", "none", "none", "none", "5.75a", "5.75nr",		"We're trying to use this information to assemble a fermentation molecular sequence we can use to keep beer-drinking a viable option in our future. ");
     	AddResponse( "5.5nr","0", "none", "none", "none", "5.75a", "5.75nr",	"Are you there? This information is very important. <br> We're trying to use this information to assemble a fermentation molecular sequence we can use to keep beer-drinking a viable option in our future. ");
     			    	
-    	AddResponse( "5.75a","0", "none", "none", "none", "6a", "6nr",		"Please send me one or two words that represent the values of the people you spoke to.");
-    	AddResponse( "5.75nr","0", "none", "none", "none", "6a", "6nr",		"If you talk to anyone please send me one or two words that represent the values of the people you spoke to.");
+    	AddResponse( "5.75a","0", "none", "none", "none", "6a", "5.75b1",		"Please send me one or two words that represent the values of the people you spoke to.");
+    	AddResponse( "5.75nr","0", "none", "none", "none", "6a", "5.75b1",		"If you talk to anyone please send me one or two words that represent the values of the people you spoke to.");
 
+    	AddResponse( "5.75b1","0", "none", "none", "none", "6a", "5.75b2",	"");
+    	AddResponse( "5.75b2","0", "none", "none", "none", "6a", "6nr",		"");
+    	
+    	
     	AddResponse( "6a","0", "none", "none", "none", "7a", "7a",		";name;, you are a great help. Now I feel I can tell you about the Biomes, they are a group of beings whose purpose it is to make things split for expansion. <br> Biomes aren't exactly good or bad, but they do sometimes make things dissolve... not good for those of us who are trying to cluster! ");
     	AddResponse( "6nr","0", "none", "none", "none", "7a", "7a",		";name;, There's more work to do. Let me tell you about the Biomes, they are a group of beings whose purpose it is to make things split for expansion. <br> Biomes aren't exactly good or bad, but they do sometimes make things dissolve... not good for those of us who are trying to cluster! ");
         
@@ -94,43 +104,53 @@ public class ResponseTreeBuilder {
     	AddResponse( "10a","0", "none", "none", "none", "10.5a", "10.5a",	"God, ;name;, it's crazy over here, the biomes are everywhere. We must act soon!");
     	AddResponse( "10nr","0", "none", "none", "none", "10.5a", "10.5a",	"God, ;name;, it's crazy over here, the biomes are everywhere. We must act soon!");
     		
-    	AddResponse("10.5a", "0", "none", "none", "none", "11a", "11nr", 	"What have you heard about waste and consumption?  I need you to send me the exact words right away.");
+    	AddResponse("10.5a", "0", "none", "none", "none", "11a", "10.5b1", 	"What have you heard about waste and consumption?  I need you to send me the exact words right away.");
     			
+    	AddResponse("10.5b1", "0", "none", "none", "none", "11a", "10.5b2", "");
+    	AddResponse("10.5b2", "0", "none", "none", "none", "11a", "11nr", 	"");
+    	
     	AddResponse( "11a","0", "none", "none", "none", "12a", "12a",		"Oh ;name;, I thought I would never hear from you! You don't know how important your last text has been to our task.");
     	AddResponse( "11nr","0", "none", "none", "none", "12nr", "12nr",	"Oh ;name;, I'm so worried! You don't know how important you are to our task.  We'll make it through tonight and hope for a reply from you tomorrow");
     	
     	AddResponse( "12a","0", "none", "none", "none", "12br", "12br",		"Meet our comrades at Jimmy's No.43 to collect a reward. 43 E 7th St, New York, NY");
     	AddResponse( "12nr","0", "none", "none", "none", "12br", "12br",	"");
     	
-    	AddResponse( "12br","b 100", "none", "none", "none", "13a", "13a",		"");
-    	
-    	AddResponse( "13a","0", "none", "none", "none", "14a", "14nr",	";name;, it's Y, I haven't heard from you in a while, what happened?  The Biomes did more damage than I thought. <br> Pls txt me and let me know u are alright.");
+    	AddResponse( "12br","a 1900", "none", "none", "none", "13a", "13a",		"");
+    	// Day 2
+    	AddResponse( "13a","a 1900", "none", "none", "none", "14a", "14nr",	";name;, it's Y, I haven't heard from you in a while, what happened?  The Biomes did more damage than I thought. <br>  Pls txt me and let me know u are alright.");
     	
     	AddResponse( "14a","0", "none", "none", "none", "15a", "15a",	"Good to hear from you ;name;. Your body can suffer but your spirit can be free.  I think we both need another beer.  It's the yeast we could do.");	
     	AddResponse( "14nr","0", "none", "none", "none", "15a", "15a",	"I don't know if you are listening ;name;, but your body can suffer but your spirit can be free.  I think we both need another beer.  It's the yeast we could do.");
     	
     	AddResponse( "15a","0", "none", "none", "none", "16a", "16a",	"Stop, feel the direction of the wind. Stand for at least a minute and feel the direction change. Sooner or later, the tanks will appear. - Y");
     	
-    	AddResponse( "16a","0", "none", "none", "none", "17a", "17a",	";name; ru here?  I need to tell u who I relly am, I'm not Y, Im -       ...");
-    	// Day 2
-    	AddResponse( "day2","0", "none", "none", "none", "17a", "17a",	"");
+    	AddResponse( "16a","0", "none", "none", "none", "day2", "day2",	";name; ru here?  I need to tell u who I relly am, I'm not Y, Im -       ...");
+    	// Day 2.5
+    	AddResponse( "day2","a 2100", "none", "none", "none", "17a", "17a",	"");
     	
-    	AddResponse( "17a","a 2100", "18y", "18a", "18a", "18a", "18a",		"Hello is this the number of ;name;?");
+    	AddResponse( "17a","0", "18y", "18a", "18a", "18a", "17.5nr",	"Hello is this the number of ;name;?");
+    	
+    	AddResponse( "17.5nr","0", "18y", "18a", "18a", "18a", "18nr",	"");
    
-    	AddResponse( "18y","0", "19y", "19a", "19a", "19a", "19a",		"My name is Seed. I found your texts on a phone we confiscated from someone who called themselves Y who is now dead. Poisoned in waste. We need to assess your involvement. Did you know Y's real identity?");
-    	AddResponse( "18a","0", "19y", "19a", "19a", "19a", "19a",		"My name is Seed. I found your number on a phone we confiscated from someone who called themselves Y who is now dead. Poisoned in waste. We need to assess your involvement. Did you know Y's real identity?");
+    	AddResponse( "18y","0", "19y", "19n", "19m", "19a", "19nr",		"Our name is Seed. ;words1;. Poisoned in waste. <br> We need to assess your involvement. Did you know Y's real identity?");
+    	AddResponse( "18a","0", "19y", "19n", "19m", "19a", "19nr",		"Our name is Seed. ;words1;. Poisoned in waste. <br> We need to assess your involvement. Did you know Y's real identity?");
+    	AddResponse( "18nr","0", "19y", "19n", "19m", "19a", "19nr",	"Our name is Seed. We found this number on a phone we confiscated from someone who called themselves Y who is now dead. Poisoned in waste. <br> We need to assess your involvement. Did you know Y's real identity?");
     	
     	AddResponse( "19y","0", "none", "none", "none", "20a", "20nr",	"Thank you for your cooperation, ;name;. Y's been talking to a lot of people. Stand by for further notification.");
-    	AddResponse( "19a","0", "none", "none", "none", "20a", "20nr",	"Further assessment is need to ascertain the validity of your answer. Stand by for notification.");
+    	AddResponse( "19n","0", "none", "none", "none", "20a", "20nr",	"That may be true ;name; but we question your cognition. Further assessment is need to ascertain the validity of your answer. <br> Stand by for notification.");
+    	AddResponse( "19m","0", "none", "none", "none", "20a", "20nr",	"Further assessment is need to ascertain the validity of your answer. <br> Stand by for notification.");
+    	AddResponse( "19a","0", "none", "none", "none", "20a", "20nr",	"Further assessment is need to ascertain the subject of your answer. <br> Stand by for notification.");
+    	AddResponse( "19nr","0", "none", "none", "none", "20a", "20nr",	"You can't ignore us for ever. You will hear from us again. <br> Stand by for further notification.");
+    	
     	
     	AddResponse( "20a","0", "none", "none", "none", "21a", "21a",	";name;, It's Seed from Biome. We don't believe that you were involved inanything directly.");
     	AddResponse( "20nr","0", "none", "none", "none", "21a", "21a",	";name;, It's Seed from Biome. We don't believe that you were involved in anything directly, so there's no reason to be non-cooperative.");
     	
-    	AddResponse( "21a","0", "none", "none", "none", "22a", "22a",	"(We know that you are motivated by drinking local, activating your imagination andbeing social.)  You need to wake up to reality, ;name;, we're not what Y said we are. We actually help people like you break out of the prison of their minds.");
+    	AddResponse( "21a","0", "none", "none", "none", "22a", "22a",	"(We know that you are motivated by drinking local, activating your imagination and being social.) <br> You need to wake up to reality, ;name;, we're not what Y said we are. We actually help people like you break out of the prison of their minds.");
     	
-    	AddResponse( "22a","0", "none", "none", "none", "23a", "23a",		"Remembrance restores possibility to the past, making whathappened incomplete and completing what never was. Tonight I need you toteach someone a song from your childhood, sing it together, and ask thatperson to do the same for you. Both of you call us and sing us the songs together on our voicemeil and we will distribute the information. Then, meet us at Jimmy's for a toast to the future. 43 E 7th St, New York, NY");
+    	AddResponse( "22a","0", "none", "none", "none", "23a", "23a",		"Remembrance restores possibility to the past, making whathappened incomplete and completing what never was. <br> Tonight I need you to teach someone a song from your childhood, sing it together, and ask thatperson to do the same for you. <br> Both of you call us and sing us the songs together on our voicemeil and we will distribute the information. <br> Then, meet us at Jimmy's for a toast to the future. 43 E 7th St, New York, NY");
     	
-    	AddResponse( "23a","0", "END", "END", "END", "END", "END",			"BEB> end of first draft. text Restart to restart");
+    	AddResponse( "23a","0", "END", "END", "END", "END", "END",			"");
 		
     	AddResponse( "END","0", "END", "END", "END", "END", "END",			"");
     }

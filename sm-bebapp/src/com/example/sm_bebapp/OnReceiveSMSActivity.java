@@ -105,6 +105,11 @@ public class OnReceiveSMSActivity extends Activity {
     		AdminCMD_ShowResponseTable(_phoneNumber,args); 
     		return true; 
         }
+    	else if(CheckCommand("set all player state", args[0]))
+        {//--Show All Responses 
+    		AdminCMD_ToggleAllPlayerPause(_phoneNumber,args); 
+    		return true; 
+        }
     	else if (CheckCommand(" ", args[0]))
     	{//--if message was a command but could not be understood. 
     		SendOutSMS(phoneNumber, "BEB> Bad Command. Try Again.");
@@ -291,6 +296,28 @@ public class OnReceiveSMSActivity extends Activity {
     	printAllResponses(); 
 		//SendOutSMS(_phoneNumber, "BEB> PLAYER TABLE \r\n" + getAllResponses());
     }
+    public void AdminCMD_ToggleAllPlayerPause(String _phoneNumber,  String[] args)
+    {
+    	
+    	List<Player> players = db.getAllPlayers();       
+    	
+        for (Player p : players) 
+        {
+        	if(args[1].equals("pause"))
+        	{
+        		p.setState(PLAYERSTATE_PAUSED );
+        		db.updatePlayer(p);
+        	}
+        	else if(args[1].equals("active"))
+        	{
+        		p.setState(PLAYERSTATE_ACTIVE);
+        		db.updatePlayer(p);
+        	}
+        	
+        }
+		SendOutSMS(_phoneNumber, "BEB> All PLayers set to "+args[1]);
+    }
+    
     
     //------ Gets the player with specified number from the database. returns null if one is not found. 
     public Player GetPlayer(String _phoneNumber)

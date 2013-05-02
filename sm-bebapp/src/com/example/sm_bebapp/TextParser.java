@@ -9,8 +9,8 @@ import android.util.Log;
 public class TextParser {
 	
 	
-	String yesList 		= "(yes|yeah|y|yup|yep|yuppers|true|correct|sure|I suppose|Definitely|positive|agreed|right on|righton|groovy|si|sí|oui)"; 
-	String noList 		= "(no|nope|n|nah|noo|negative|false|wrong|sorry|no|siento|pas|désolé)"; 
+	String yesList 		= "(yes|yeah|y|yup|yep|yuppers|true|correct|sure|of course|I suppose|Damn straight|Definitely|positive|agreed|right on|righton|groovy|si|sí|oui)"; 
+	String noList 		= "(no|nope|n|nah|not|noo|negative|false|wrong|sorry|no|siento|pas|désolé)"; 
 	String maybeList 	= "(maybe|sometimes|not sure|can't tell|possibly|don't know|kinda|kind of|kindof|sorta|sortof|sort of|no idea)"; 
 	
 	private static final String PLAYERSTATE_ACTIVE 		= "active";
@@ -171,7 +171,7 @@ public class TextParser {
 			Log.d(">> PLAYER ENDED", _player.getPhoneNumber() + " ended the game. Seting to paused.");
 			
 		}
-		else if(_currentResponse.getId().equals("1a") || _currentResponse.getId().equals("1nr") || _currentResponse.getId().equals("1m")|| _currentResponse.getId().equals("1n")|| _currentResponse.getId().equals("p0") )//stor the name for the name question. Hacky! I know. 
+		else if(_currentResponse.getId().equals("1a") || _currentResponse.getId().equals("1nr") || _currentResponse.getId().equals("1m")|| _currentResponse.getId().equals("1n")|| _currentResponse.getId().equals("1b1")|| _currentResponse.getId().equals("1b2")|| _currentResponse.getId().equals("p0") )//stor the name for the name question. Hacky! I know. 
 		{
 			if(_message.equals(":;:none:;:"))
 			{
@@ -182,15 +182,15 @@ public class TextParser {
 				_player.setName(BuildName(_message)); 
 			}
 		}
-		else if(_currentResponse.getId().equals("0"))
+		else if(_currentResponse.getId().equals("0") || _currentResponse.getId().equals("0b1") ||_currentResponse.getId().equals("0b2"))
 		{
 			_player.setYear(BuildName(_message));
 		}
-		else if(_currentResponse.getId().equals("5.75a")||_currentResponse.getId().equals("5.75nr"))
+		else if(_currentResponse.getId().equals("5.75a")||_currentResponse.getId().equals("5.75nr")||_currentResponse.getId().equals("5.75b1")||_currentResponse.getId().equals("5.75b2"))
 		{
 			_player.setWords1(_message);
 		}
-		else if(_currentResponse.getId().equals("10.5a"))
+		else if(_currentResponse.getId().equals("10.5a") || _currentResponse.getId().equals("10.5b1") ||_currentResponse.getId().equals("10.5b2"))
 		{
 			_player.setWords2(_message);
 		}
@@ -218,11 +218,34 @@ public class TextParser {
 			}
 			else if(r.equals("words1"))
 			{
-				r= _player.getWords1();
+				if (_player.getWords1().equals(":;:none:;:"))
+				{
+					r = "Someone who called themselves Y who is now dead.";
+				}
+				else
+				{
+					r= "We found your texts on a phone we confiscated from someone who called themselves Y who is now dead. <br> \"" + _player.getWords1().trim()+"\"";
+					if (_player.getWords2().equals(":;:none:;:"))
+					{
+						r += "";
+					}
+					else
+					{
+						r += "and \"" + _player.getWords2().trim()+"\"";
+					}
+				}
+				
 			}
 			else if(r.equals("words2"))
 			{
-				r= _player.getWords2();
+				if (_player.getWords2().equals(":;:none:;:"))
+				{
+					r = "";
+				}
+				else
+				{
+					r= "\"" + _player.getWords2().trim()+"\"";
+				}
 			}
 			response += r;
 		}
